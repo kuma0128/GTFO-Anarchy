@@ -16,6 +16,8 @@ Validated on 7 September 2026 (JST), with GTFO revision **34873**, Unity **2019.
 
 ## Checks
 
+CLIからゲーム内へコマンドを送る仕組みと再実行手順は、[game-validationの日本語説明](tools/game-validation/README.md) に記載しています。
+
 The CLI validator parses the shipped data with JSON comments and trailing commas supported. It checks root block IDs, active expedition/layout/objective references, zone indices and parent references, coverage bounds, concrete subcomplex selections, the exit fog reference and scan lookup keys. From a source checkout, run:
 
 ```powershell

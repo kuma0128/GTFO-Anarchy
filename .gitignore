@@ -1,1 +1,5 @@
 tools/node_modules/
+tools/game-validation/bridge/bin/
+tools/game-validation/bridge/obj/
+tools/game-validation/logs/
+tools/game-validation/runtime/

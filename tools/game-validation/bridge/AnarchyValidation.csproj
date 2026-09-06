@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>AnarchyValidation</AssemblyName>
+    <CConsolePath Condition="'$(CConsolePath)' == ''">$(GameRoot)/BepInEx/plugins/GTFOModding-CConsole/CConsole.dll</CConsolePath>
+    <ScanOverridePath Condition="'$(ScanOverridePath)' == ''">$(GameRoot)/BepInEx/plugins/ScanPosOverride.dll</ScanOverridePath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="$(GameRoot)/BepInEx/core/*.dll" />
+    <Reference Include="$(GameRoot)/BepInEx/interop/*.dll" />
+    <Reference Include="$(CConsolePath)" />
+    <Reference Include="$(ScanOverridePath)" />
+  </ItemGroup>
+  <Target Name="CheckGameReferences" BeforeTargets="ResolveReferences">
+    <Error Condition="'$(GameRoot)' == ''" Text="Pass an absolute game path with -p:GameRoot=..." />
+    <Error Condition="!Exists('$(GameRoot)/BepInEx/interop/Modules-ASM.dll')" Text="Start the BepInEx test installation once to generate its interop assemblies." />
+    <Error Condition="!Exists('$(CConsolePath)')" Text="Install CConsole 0.14.0, or set -p:CConsolePath=..." />
+    <Error Condition="!Exists('$(ScanOverridePath)')" Text="Install ExtraChainedPuzzleCustomization 1.6.12, or set -p:ScanOverridePath=..." />
+  </Target>
+</Project>
