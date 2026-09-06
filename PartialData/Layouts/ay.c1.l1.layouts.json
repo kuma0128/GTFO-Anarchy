@@ -777,7 +777,7 @@
             "MarkerSubSeed": 45,
             "LightsSubSeed": 0,
             "BulkheadDCScanSeed": 0,
-            "SubComplex": 6,
+            "SubComplex": 1,
             "CustomGeomorph": "Assets/AssetPrefabs/Complex/Mining/Geomorphs/Refinery/geo_64x64_mining_refinery_dead_end_HA_01.prefab",
             "IgnoreRandomGeomorphRotation": false,
             "CoverageMinMax": {
@@ -939,7 +939,7 @@
             "DeconUnitsInZone": 0,
             "AllowSmallPickupsAllocation": true,
             "AllowResourceContainerAllocation": true,
-            "ForceBigPickupsAllocation": false,
+            "ForceBigPickupsAllocation": true,
             "ConsumableDistributionInZone": 62,
             "BigPickupDistributionInZone": 0,
             "TerminalPlacements": [
@@ -983,7 +983,7 @@
             "MarkerSubSeed": 646622273,
             "LightsSubSeed": 2004998412,
             "BulkheadDCScanSeed": 1304150707,
-            "SubComplex": 4,
+            "SubComplex": 2,
             "CustomGeomorph": "Assets/AssetPrefabs/Complex/Mining/Geomorphs/Storage/geo_64x64_mining_storage_I_HA_AW.prefab",
             "IgnoreRandomGeomorphRotation": false,
             "CoverageMinMax": {
@@ -1094,7 +1094,7 @@
             "MarkerSubSeed": 646622273,
             "LightsSubSeed": 2004998412,
             "BulkheadDCScanSeed": 1304150707,
-            "SubComplex": 4,
+            "SubComplex": 2,
             "CustomGeomorph": "Assets/AssetPrefabs/Complex/Mining/Geomorphs/Storage/geo_64x64_mining_storage_I_HA_AW.prefab",
             "IgnoreRandomGeomorphRotation": false,
             "CoverageMinMax": {

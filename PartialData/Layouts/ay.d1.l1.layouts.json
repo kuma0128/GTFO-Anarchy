@@ -729,7 +729,7 @@
             "DeconUnitsInZone": 0,
             "AllowSmallPickupsAllocation": true,
             "AllowResourceContainerAllocation": true,
-            "ForceBigPickupsAllocation": false,
+            "ForceBigPickupsAllocation": true,
             "ConsumableDistributionInZone": 0,
             "BigPickupDistributionInZone": 0,
             "TerminalPlacements": [
@@ -950,7 +950,7 @@
             "DeconUnitsInZone": 0,
             "AllowSmallPickupsAllocation": true,
             "AllowResourceContainerAllocation": true,
-            "ForceBigPickupsAllocation": false,
+            "ForceBigPickupsAllocation": true,
             "ConsumableDistributionInZone": 0,
             "BigPickupDistributionInZone": 0,
             "TerminalPlacements": [

@@ -22,7 +22,7 @@
     { // cluster core
       "Index": 23,
       "HideSpline": true,
-      "ConcurrentCluster": true,
+      "ConcurrentCluster": false,
       "Position": {
         "x": 5.72,
         "y": 2.9536,

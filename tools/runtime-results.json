@@ -1,0 +1,321 @@
+{
+  "gameRevision": 34873,
+  "unityVersion": "2019.4.21f1",
+  "testDateJST": "2026-09-07",
+  "scope": "Local level generation and scan placement; full mission clears and multiplayer not verified.",
+  "fingerprintNote": "SHA-256 of sorted [relative path, file SHA-256] pairs for GameData, Custom and PartialData, excluding the automatically rewritten PartialData/_persistentID.json.",
+  "results": [
+    {
+      "stage": "C1",
+      "status": "built",
+      "startedAt": "2026-09-06T15:21:47.437Z",
+      "finishedAt": "2026-09-06T15:23:55.704Z",
+      "errorOrExceptionLines": 22,
+      "warningLines": 39,
+      "categories": {
+        "brokenGridCells": 2,
+        "dimensionGrid": 0,
+        "missingGridCells": 0,
+        "spawnFallback": 1
+      },
+      "scans": [],
+      "fogVerified": true,
+      "sourceFingerprint": "0ba409003f8d98695a28003a64b64a41f2a6f92f2f5055178a93864208ddc851",
+      "buildLogSHA256": "84061c7a9f00a9c8f479ba4734f12adad86057fe40c999b2e926346834622e10",
+      "movement": [
+        {
+          "zone": 1,
+          "x": -6.3619375,
+          "y": 0.00952971,
+          "z": 143.72342
+        }
+      ],
+      "spawnFallbackAfterMovement": 0
+    },
+    {
+      "stage": "C2",
+      "status": "built",
+      "startedAt": "2026-09-06T15:12:54.982Z",
+      "finishedAt": "2026-09-06T15:14:07.075Z",
+      "errorOrExceptionLines": 259,
+      "warningLines": 101,
+      "categories": {
+        "brokenGridCells": 249,
+        "dimensionGrid": 0,
+        "missingGridCells": 0,
+        "spawnFallback": 0
+      },
+      "scans": [
+        {
+          "stage": "C2",
+          "index": 12,
+          "found": true,
+          "registered": true,
+          "appliedDistance": 2.3841858e-7,
+          "distance": 0.06887078,
+          "x": -305.5566,
+          "y": 1.9875,
+          "z": 464.797
+        },
+        {
+          "stage": "C2",
+          "index": 13,
+          "found": true,
+          "registered": true,
+          "appliedDistance": 0,
+          "distance": 0.024857044,
+          "x": -335.4857,
+          "y": -2.9632,
+          "z": 458.7296
+        },
+        {
+          "stage": "C2",
+          "index": 14,
+          "found": true,
+          "registered": true,
+          "appliedDistance": 0,
+          "distance": 0.053230405,
+          "x": -319.8092,
+          "y": -1.0135,
+          "z": 439.8115
+        },
+        {
+          "stage": "C2",
+          "index": 15,
+          "found": true,
+          "registered": true,
+          "appliedDistance": 2.3841858e-7,
+          "distance": 0.09152293,
+          "x": -319.5,
+          "y": 3.0118,
+          "z": 464.5
+        }
+      ],
+      "fogVerified": true,
+      "sourceFingerprint": "0ba409003f8d98695a28003a64b64a41f2a6f92f2f5055178a93864208ddc851",
+      "buildLogSHA256": "c974d3a5c9b271b002fd83615325cdf756e2af046d1de902b9d9c1b5cb5ec8e0"
+    },
+    {
+      "stage": "D1",
+      "status": "built",
+      "startedAt": "2026-09-06T15:14:17.251Z",
+      "finishedAt": "2026-09-06T15:15:32.660Z",
+      "errorOrExceptionLines": 69,
+      "warningLines": 357,
+      "categories": {
+        "brokenGridCells": 67,
+        "dimensionGrid": 0,
+        "missingGridCells": 0,
+        "spawnFallback": 0
+      },
+      "scans": [
+        {
+          "stage": "D1",
+          "index": 56,
+          "found": true,
+          "registered": true,
+          "appliedDistance": 2.9802322e-8,
+          "distance": 0.09751248,
+          "x": 0.3676,
+          "y": 0.2444,
+          "z": 90.0528
+        }
+      ],
+      "fogVerified": true,
+      "sourceFingerprint": "0ba409003f8d98695a28003a64b64a41f2a6f92f2f5055178a93864208ddc851",
+      "buildLogSHA256": "da52f4026fdfce34856c838de2e37c7716640955e51bb8228b035e7ed4300e68"
+    },
+    {
+      "stage": "D2",
+      "status": "built",
+      "startedAt": "2026-09-06T15:15:43.093Z",
+      "finishedAt": "2026-09-06T15:17:05.760Z",
+      "errorOrExceptionLines": 3419,
+      "warningLines": 80,
+      "categories": {
+        "brokenGridCells": 334,
+        "dimensionGrid": 1536,
+        "missingGridCells": 1536,
+        "spawnFallback": 0
+      },
+      "scans": [
+        {
+          "stage": "D2",
+          "index": 21,
+          "found": true,
+          "registered": true,
+          "appliedDistance": 0,
+          "distance": 0.03670025,
+          "x": -0.011,
+          "y": 3.0413,
+          "z": 328.4909
+        },
+        {
+          "stage": "D2",
+          "index": 22,
+          "found": true,
+          "registered": true,
+          "appliedDistance": 0,
+          "distance": 0.011322975,
+          "x": 24.0364,
+          "y": 2.967,
+          "z": 303.7505
+        },
+        {
+          "stage": "D2",
+          "index": 23,
+          "found": true,
+          "registered": true,
+          "appliedDistance": 0,
+          "distance": 0.066389084,
+          "x": 5.72,
+          "y": 2.9536,
+          "z": 319.4511
+        },
+        {
+          "stage": "D2",
+          "index": 24,
+          "found": true,
+          "registered": true,
+          "appliedDistance": 0,
+          "distance": 0.022337437,
+          "x": 10.5,
+          "y": 3.121,
+          "z": 335.5
+        },
+        {
+          "stage": "D2",
+          "index": 25,
+          "found": true,
+          "registered": true,
+          "appliedDistance": 4.7683716e-7,
+          "distance": 0.0117890835,
+          "x": -3.4055,
+          "y": 3.0082,
+          "z": 332.8765
+        },
+        {
+          "stage": "D2",
+          "index": 26,
+          "found": true,
+          "registered": true,
+          "appliedDistance": 0,
+          "distance": 0.044992924,
+          "x": 3.6742,
+          "y": 3.0413,
+          "z": 327.8275
+        },
+        {
+          "stage": "D2",
+          "index": 27,
+          "found": true,
+          "registered": true,
+          "appliedDistance": 0,
+          "distance": 0.07183266,
+          "x": 8.402,
+          "y": 3.018,
+          "z": 320.272
+        },
+        {
+          "stage": "D2",
+          "index": 28,
+          "found": true,
+          "registered": true,
+          "appliedDistance": 0.0000019073486,
+          "distance": 0.04815674,
+          "x": -27.4724,
+          "y": 6.8885,
+          "z": 321.6244
+        },
+        {
+          "stage": "D2",
+          "index": 29,
+          "found": true,
+          "registered": true,
+          "appliedDistance": 0,
+          "distance": 0.029684782,
+          "x": 16.2831,
+          "y": 2.9236,
+          "z": 338.8961
+        }
+      ],
+      "fogVerified": true,
+      "sourceFingerprint": "0ba409003f8d98695a28003a64b64a41f2a6f92f2f5055178a93864208ddc851",
+      "buildLogSHA256": "fb8dfa6fda6e4a280b3986b815ea893bfe5761660476bcb0dfc800d917af216c"
+    },
+    {
+      "stage": "D3",
+      "status": "built",
+      "startedAt": "2026-09-06T15:17:17.468Z",
+      "finishedAt": "2026-09-06T15:18:34.067Z",
+      "errorOrExceptionLines": 126,
+      "warningLines": 48,
+      "categories": {
+        "brokenGridCells": 121,
+        "dimensionGrid": 0,
+        "missingGridCells": 0,
+        "spawnFallback": 0
+      },
+      "scans": [
+        {
+          "stage": "D3",
+          "index": 87,
+          "found": true,
+          "registered": true,
+          "appliedDistance": 0,
+          "distance": 0.06478977,
+          "x": 134.8038,
+          "y": -5.9903,
+          "z": 486.2339
+        },
+        {
+          "stage": "D3",
+          "index": 88,
+          "found": true,
+          "registered": true,
+          "appliedDistance": 0,
+          "distance": 0.04972267,
+          "x": 121.6542,
+          "y": -13.6123,
+          "z": 502.8909
+        },
+        {
+          "stage": "D3",
+          "index": 89,
+          "found": true,
+          "registered": true,
+          "appliedDistance": 0,
+          "distance": 0.08228302,
+          "x": 121.2844,
+          "y": -13.71,
+          "z": 513.7817
+        },
+        {
+          "stage": "D3",
+          "index": 90,
+          "found": true,
+          "registered": true,
+          "appliedDistance": 0,
+          "distance": 0.05603075,
+          "x": 130.4553,
+          "y": -5.8194,
+          "z": 538.6181
+        },
+        {
+          "stage": "D3",
+          "index": 91,
+          "found": true,
+          "registered": true,
+          "appliedDistance": 0,
+          "distance": 0.057519674,
+          "x": 110.3211,
+          "y": -4.0013,
+          "z": 498.1276
+        }
+      ],
+      "fogVerified": true,
+      "sourceFingerprint": "0ba409003f8d98695a28003a64b64a41f2a6f92f2f5055178a93864208ddc851",
+      "buildLogSHA256": "966e66d162c2c2cf4871b7c603846e5d0929829441c1114601071461129ce1ae"
+    }
+  ]
+}

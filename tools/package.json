@@ -1,0 +1,6 @@
+{
+  "name": "anarchy-data-validation",
+  "private": true,
+  "scripts": { "test": "node validate-data.cjs" },
+  "devDependencies": { "jsonc-parser": "3.3.1" }
+}

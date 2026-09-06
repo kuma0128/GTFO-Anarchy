@@ -17,6 +17,15 @@ Special thanks to my team (Scotch, Jonino, Cross) and friends.
 
 ## VERSION
 
+```1.1.6```
+
+- Fixed D3's exit fog reference and restored its scan position overrides.
+- Fixed empty data overrides that caused exceptions in current MTFO.
+- Corrected resource allocation, zone coverage, dimension lighting, and scan settings found during in-game build tests.
+- Updated dependencies to the versions used for validation.
+- C1, C2, D1, D2, and D3 were built in GTFO revision 34873. All 19 fixed scan positions were checked against the generated navigation mesh. Full mission clears and multiplayer synchronization were not retested.
+- Remaining engine/dependency diagnostics and the test scope are documented in the [validation report](https://github.com/kuma0128/GTFO-Anarchy/blob/anarchy-1.1.6/VALIDATION.md).
+
 ```1.1.5```
 
 - Added some plugins

@@ -1,5 +1,17 @@
 # CHANGELOG
 
+```1.1.6```
+
+- D3: assign unique fog ID 225 to the exit transition; restore the missing scan override file with the correct main layout key; select Refinery for the exit zone.
+- Data loading: remove three empty GameData overrides so MTFO can load the standard data before PartialData applies Anarchy's definitions.
+- C1: correct zone subcomplexes and reserve the objective pickup placement in zone 68.
+- C2: enable pickup and resource allocation in zone 105; correct the coverage bounds and reserve the large pickup in zone 104.
+- D1: reserve generator cell placements; restore valid lighting and disable unused terminals in its desert dimension.
+- D2: remove the invalid six-way concurrent scan flag and align the collapsed zone's minimum coverage with its generated area.
+- D3: correct a reversed coverage range.
+- Update dependency requirements and add a CLI data validator plus a runtime validation report.
+- Validation covers level generation and fixed scan placement. It does not certify complete mission progression or multiplayer synchronization.
+
 ```1.1.3```
 
 - Deleted MyCoolPlugin3

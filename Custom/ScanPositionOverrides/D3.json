@@ -1,0 +1,50 @@
+{
+  "MainLevelLayout": "Anarchy_D3_L1",
+  "Puzzles": [
+    {
+      "Index": 87,
+      "Position": {
+        "x": 134.8038,
+        "y": -5.9903,
+        "z": 486.2339
+      },
+      "HideSpline": false
+    },
+    {
+      "Index": 88,
+      "Position": {
+        "x": 121.6542,
+        "y": -13.6123,
+        "z": 502.8909
+      },
+      "HideSpline": false
+    },
+    {
+      "Index": 89,
+      "Position": {
+        "x": 121.2844,
+        "y": -13.71,
+        "z": 513.7817
+      },
+      "HideSpline": false
+    },
+    {
+      "Index": 90,
+      "Position": {
+        "x": 130.4553,
+        "y": -5.8194,
+        "z": 538.6181
+      },
+      "HideSpline": false
+    },
+    {
+      "Index": 91,
+      "Position": {
+        "x": 110.3211,
+        "y": -4.0013,
+        "z": 498.1276
+      },
+      "HideSpline": false
+    }
+  ]
+}

@@ -749,8 +749,8 @@
             "CustomGeomorph": "",
             "IgnoreRandomGeomorphRotation": false,
             "CoverageMinMax": {
-                "x": 50.0,
-                "y": 40.0,
+                "x": 40,
+                "y": 50,
                 "normalized": {
                     "x": 0.6853647,
                     "y": 0.7282,
@@ -1848,7 +1848,7 @@
             "MarkerSubSeed": 0,
             "LightsSubSeed": 0,
             "BulkheadDCScanSeed": 0,
-            "SubComplex": 5,
+            "SubComplex": 1,
             "CustomGeomorph": "Assets/CustomGeo_Mining_Prelude/geo_32x32_mining_refinery_exit_DE_01.prefab",
             "IgnoreRandomGeomorphRotation": false,
             "CoverageMinMax": {

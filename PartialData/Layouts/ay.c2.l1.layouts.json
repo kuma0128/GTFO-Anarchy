@@ -829,7 +829,7 @@
             "CustomGeomorph": "",
             "IgnoreRandomGeomorphRotation": false,
             "CoverageMinMax": {
-                "x": 20.0,
+                "x": 3,
                 "y": 20.0,
                 "normalized": {
                     "x": 0.6401844,
@@ -969,7 +969,7 @@
             "DeconUnitsInZone": 0,
             "AllowSmallPickupsAllocation": true,
             "AllowResourceContainerAllocation": true,
-            "ForceBigPickupsAllocation": false,
+            "ForceBigPickupsAllocation": true,
             "ConsumableDistributionInZone": 0,
             "BigPickupDistributionInZone": 0,
             "TerminalPlacements": [
@@ -1159,8 +1159,8 @@
             "GroundSpawnersInZone": 0,
             "HSUsInZone": 0,
             "DeconUnitsInZone": 0,
-            "AllowSmallPickupsAllocation": false,
-            "AllowResourceContainerAllocation": false,
+            "AllowSmallPickupsAllocation": true,
+            "AllowResourceContainerAllocation": true,
             "ForceBigPickupsAllocation": true,
             "ConsumableDistributionInZone": 10,
             "BigPickupDistributionInZone": 0,
@@ -1474,8 +1474,8 @@
             "CustomGeomorph": "",
             "IgnoreRandomGeomorphRotation": false,
             "CoverageMinMax": {
-                "x": 25.0,
-                "y": 20.0,
+                "x": 20,
+                "y": 25,
                 "normalized": {
                     "x": 0.6401844,
                     "y": 0.7682213,
