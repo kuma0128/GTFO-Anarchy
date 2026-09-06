@@ -2,15 +2,30 @@
 
 Validated on 7 September 2026 (JST), with GTFO revision **34873**, Unity **2019.4.21f1**, on Windows. The release fixes data-loading and level-generation issues found while updating the older Anarchy package.
 
+## Follow-up: layout changes found in screenshot comparison
+
+A same-seed comparison on 7 September found that lowering minimum coverage in 1.1.6 **changes the generated rooms**, rather than only suppressing generation diagnostics:
+
+| Zone | Previous layout settings | 1.1.6 | Impact |
+| --- | --- | --- | --- |
+| C2 ZONE104 | Coverage 40, 2 areas | Coverage 3, 1 area | Smaller; different room asset and position |
+| D2 ZONE317 | Coverage 30, 2 areas | Coverage 10, 1 area | Smaller; different room asset and position |
+
+These minimum-coverage changes need review if preserving the original stage scale is the goal. The initial build checks did not catch this change in scale. C1, D1 and D3, and the other zones in C2/D2, retained the same basic area layout measurements: 80 of 82 runtime zones, including dimensions, matched in coverage, area count, room asset and transforms rounded to 0.001 m. This does not establish identical internal walls, stairs or other geomorph child objects, or compare enemies, props, resources, lighting or objective behavior. Use the screenshots to review visual differences within those base assets.
+
+The comparison uses GTFO revision 34873 and the same dependency versions and seeds on both sides. Its previous-layout variant restores only the five main layout JSON files and `GameData_DimensionDataBlock_bin.json` from `31f5257`, keeping the other 1.1.6 fixes active. It is not a test of the complete unmodified 1.1.5 package. Repeated builds reproduced the smaller C2/D2 results. Screenshots were captured in the actual game through the CLI bridge, CConsole Freecam and Unity ScreenCapture, with developer rendering/lighting settings for visibility.
+
+The released 1.1.6 data and tag have not been replaced. See [the parameter explanations](tools/parameters-1.1.6.md) and [the comparison summary](tools/geometry-comparison-1.1.6.json) for the measured changes.
+
 ## Changes
 
 - Assign D3's exit fog its referenced ID, **225**, resolving the duplicate ID 224. The runtime now loads `Fog_anarchy_d3_after_exit` with infection `0.05`.
 - Restore the D3 scan override file missing from the GitHub source and use `Anarchy_D3_L1` as its lookup key. The secondary-layer scans use the expedition's main layout as their key.
 - Remove three empty `{}` GameData files. Current MTFO expects a `Blocks` array and threw exceptions while reading those files. Without them, MTFO loads the standard definitions before PartialData applies Anarchy's layouts, objectives and rundown.
 - Correct C1's Refinery/Storage subcomplex selections and reserve its chained-objective pickup placement.
-- Enable C2 zone 105 pickup/resource allocation, reserve the large pickup in zone 104, and correct its coverage bounds. Reduce zone 104's minimum to the fixed area's generated coverage, preserving its scan coordinates.
+- Enable C2 zone 105 pickup/resource allocation, reserve the large pickup in zone 104, and correct its coverage bounds. Lower zone 104's minimum coverage from 20 to 3, preserving its scan coordinates; the follow-up comparison above documents the resulting shrink.
 - Reserve D1's generator-cell placements and restore the desert dimension's standard lighting ID 18 and terminal prohibition.
-- Remove D2's unsupported six-scan concurrent-cluster flag. The dependency supports at most four concurrent scans; the six existing scans and their positions are retained. Correct the collapsed zone's minimum coverage to its generated area.
+- Remove D2's unsupported six-scan concurrent-cluster flag. The dependency supports at most four concurrent scans; the six existing scans and their positions are retained. Lower ZONE317's minimum coverage from 20 to 10; the follow-up comparison above documents the resulting shrink.
 - Correct D3's reversed coverage range and select Refinery for its exit geomorph.
 - Update the 33 direct dependency requirements to the versions used for testing. No debug or cheat plugin is included in the release.
 

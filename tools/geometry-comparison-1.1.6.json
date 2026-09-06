@@ -1,0 +1,800 @@
+{
+  "comparedOn": "2026-09-07 JST",
+  "gameRevision": 34873,
+  "method": "Actual game generation, one process per stage and variant; room names with runtime instance suffixes removed; coverage and area transforms compared after rounding coordinates to 0.001.",
+  "previousVariant": "Only the five main layouts and DimensionData are restored from the before commit. Other common 1.1.6 fixes and current dependencies remain active on both sides.",
+  "sourceCommits": {
+    "before": "31f5257f224110900966d72a74a3054e6b17ec60",
+    "after": "62a2462868f6f92ccbe2e4c8e4506334ed239f3d"
+  },
+  "inputFiles": [
+    {
+      "file": "PartialData/Layouts/ay.c1.l1.layouts.json",
+      "beforeSHA256": "cff96dfcad52a527f2ebb2af06b438e46e211cb175820830ebb259110f28dcf1",
+      "afterSHA256": "d060bf4df84b3dc6d46ba7f72a3a726d55e1f2c33423ccc0087b758abc62abf3"
+    },
+    {
+      "file": "PartialData/Layouts/ay.c2.l1.layouts.json",
+      "beforeSHA256": "5a40d65087d58748f82f98e245417300e73613a3b4e0b3688412fb661e744a22",
+      "afterSHA256": "0a477c90e9d50dc60782d46271aee4f99a6976b3785081aa7eca42905a45f06a"
+    },
+    {
+      "file": "PartialData/Layouts/ay.d1.l1.layouts.json",
+      "beforeSHA256": "137a5e65d918f9555481c207625a34a28928ffa43c59a5e704deb87307e98418",
+      "afterSHA256": "2481f418be7e806242a18e2eb9ea374410d4cc2b75d494abdc387715eac1d828"
+    },
+    {
+      "file": "PartialData/Layouts/ay.d2.l1.layouts.json",
+      "beforeSHA256": "5751019c26cbc341ebad560dc7e4977f18aae5be58d76c806a7d986f439c8b2e",
+      "afterSHA256": "7355272e00c208fb924a132fbded3f9560cc92b62663146325a3eeb808e1048b"
+    },
+    {
+      "file": "PartialData/Layouts/ay.d3.l1.layouts.json",
+      "beforeSHA256": "2b2eb0c6cc303d00371d2efee5ab5c4d3aecad38c07449c4991ffe531cf51f45",
+      "afterSHA256": "1b0a021cd50de84dc1c4a0749a0c42f71c84bd1fd0691a9c2b96c57aa9d2d713"
+    },
+    {
+      "file": "GameData_DimensionDataBlock_bin.json",
+      "beforeSHA256": "fb437b35e27aec0ec1ad28550f8a837d9c96640fe0d57acbf48591b1211de024",
+      "afterSHA256": "cda8ba1bcbca67b594580c653252b5998994a5b7dcb8512aa3e10eb9c1d9d40c"
+    }
+  ],
+  "exclusions": [
+    "Internal walls, stairs and other geomorph child objects",
+    "Enemy and prop placement",
+    "Item and resource amounts",
+    "Fog, lighting and objective event behavior",
+    "Full mission clears",
+    "Multiplayer behavior"
+  ],
+  "stages": {
+    "C1": [
+      {
+        "zone": 62,
+        "dimension": "Reality",
+        "coverageBefore": 55,
+        "coverageAfter": 55,
+        "areaCountBefore": 3,
+        "areaCountAfter": 3,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 63,
+        "dimension": "Reality",
+        "coverageBefore": 52,
+        "coverageAfter": 52,
+        "areaCountBefore": 2,
+        "areaCountAfter": 2,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 64,
+        "dimension": "Reality",
+        "coverageBefore": 30,
+        "coverageAfter": 30,
+        "areaCountBefore": 2,
+        "areaCountAfter": 2,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 65,
+        "dimension": "Reality",
+        "coverageBefore": 35,
+        "coverageAfter": 35,
+        "areaCountBefore": 2,
+        "areaCountAfter": 2,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 66,
+        "dimension": "Reality",
+        "coverageBefore": 10,
+        "coverageAfter": 10,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 67,
+        "dimension": "Reality",
+        "coverageBefore": 20,
+        "coverageAfter": 20,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 68,
+        "dimension": "Reality",
+        "coverageBefore": 20,
+        "coverageAfter": 20,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 69,
+        "dimension": "Reality",
+        "coverageBefore": 20,
+        "coverageAfter": 20,
+        "areaCountBefore": 2,
+        "areaCountAfter": 2,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 70,
+        "dimension": "Reality",
+        "coverageBefore": 20,
+        "coverageAfter": 20,
+        "areaCountBefore": 2,
+        "areaCountAfter": 2,
+        "sameAreaLayout": true
+      }
+    ],
+    "C2": [
+      {
+        "zone": 0,
+        "dimension": "Dimension_1",
+        "coverageBefore": 0,
+        "coverageAfter": 0,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 99,
+        "dimension": "Reality",
+        "coverageBefore": 78,
+        "coverageAfter": 78,
+        "areaCountBefore": 6,
+        "areaCountAfter": 6,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 100,
+        "dimension": "Reality",
+        "coverageBefore": 62,
+        "coverageAfter": 62,
+        "areaCountBefore": 3,
+        "areaCountAfter": 3,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 101,
+        "dimension": "Reality",
+        "coverageBefore": 53,
+        "coverageAfter": 53,
+        "areaCountBefore": 4,
+        "areaCountAfter": 4,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 102,
+        "dimension": "Reality",
+        "coverageBefore": 60,
+        "coverageAfter": 60,
+        "areaCountBefore": 4,
+        "areaCountAfter": 4,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 103,
+        "dimension": "Reality",
+        "coverageBefore": 53,
+        "coverageAfter": 53,
+        "areaCountBefore": 4,
+        "areaCountAfter": 4,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 104,
+        "dimension": "Reality",
+        "coverageBefore": 40,
+        "coverageAfter": 3,
+        "areaCountBefore": 2,
+        "areaCountAfter": 1,
+        "sameAreaLayout": false
+      },
+      {
+        "zone": 105,
+        "dimension": "Reality",
+        "coverageBefore": 32,
+        "coverageAfter": 32,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 106,
+        "dimension": "Reality",
+        "coverageBefore": 30,
+        "coverageAfter": 30,
+        "areaCountBefore": 2,
+        "areaCountAfter": 2,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 107,
+        "dimension": "Reality",
+        "coverageBefore": 23,
+        "coverageAfter": 23,
+        "areaCountBefore": 2,
+        "areaCountAfter": 2,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 108,
+        "dimension": "Reality",
+        "coverageBefore": 20,
+        "coverageAfter": 20,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 109,
+        "dimension": "Reality",
+        "coverageBefore": 3,
+        "coverageAfter": 3,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      }
+    ],
+    "D1": [
+      {
+        "zone": 0,
+        "dimension": "Dimension_1",
+        "coverageBefore": 0,
+        "coverageAfter": 0,
+        "areaCountBefore": 4,
+        "areaCountAfter": 4,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 433,
+        "dimension": "Reality",
+        "coverageBefore": 23,
+        "coverageAfter": 23,
+        "areaCountBefore": 2,
+        "areaCountAfter": 2,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 434,
+        "dimension": "Reality",
+        "coverageBefore": 32,
+        "coverageAfter": 32,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 435,
+        "dimension": "Reality",
+        "coverageBefore": 20,
+        "coverageAfter": 20,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 436,
+        "dimension": "Reality",
+        "coverageBefore": 30,
+        "coverageAfter": 30,
+        "areaCountBefore": 2,
+        "areaCountAfter": 2,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 437,
+        "dimension": "Reality",
+        "coverageBefore": 40,
+        "coverageAfter": 40,
+        "areaCountBefore": 3,
+        "areaCountAfter": 3,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 438,
+        "dimension": "Reality",
+        "coverageBefore": 53,
+        "coverageAfter": 53,
+        "areaCountBefore": 4,
+        "areaCountAfter": 4,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 439,
+        "dimension": "Reality",
+        "coverageBefore": 30,
+        "coverageAfter": 30,
+        "areaCountBefore": 2,
+        "areaCountAfter": 2,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 440,
+        "dimension": "Reality",
+        "coverageBefore": 30,
+        "coverageAfter": 30,
+        "areaCountBefore": 2,
+        "areaCountAfter": 2,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 441,
+        "dimension": "Reality",
+        "coverageBefore": 32,
+        "coverageAfter": 32,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 442,
+        "dimension": "Reality",
+        "coverageBefore": 20,
+        "coverageAfter": 20,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 443,
+        "dimension": "Reality",
+        "coverageBefore": 3,
+        "coverageAfter": 3,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 444,
+        "dimension": "Reality",
+        "coverageBefore": 20,
+        "coverageAfter": 20,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 445,
+        "dimension": "Reality",
+        "coverageBefore": 20,
+        "coverageAfter": 20,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 446,
+        "dimension": "Reality",
+        "coverageBefore": 3,
+        "coverageAfter": 3,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 447,
+        "dimension": "Reality",
+        "coverageBefore": 20,
+        "coverageAfter": 20,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 448,
+        "dimension": "Reality",
+        "coverageBefore": 10,
+        "coverageAfter": 10,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      }
+    ],
+    "D2": [
+      {
+        "zone": 0,
+        "dimension": "Dimension_17",
+        "coverageBefore": 0,
+        "coverageAfter": 0,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 0,
+        "dimension": "Dimension_18",
+        "coverageBefore": 0,
+        "coverageAfter": 0,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 0,
+        "dimension": "Dimension_19",
+        "coverageBefore": 0,
+        "coverageAfter": 0,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 0,
+        "dimension": "Dimension_20",
+        "coverageBefore": 0,
+        "coverageAfter": 0,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 0,
+        "dimension": "Dimension_1",
+        "coverageBefore": 0,
+        "coverageAfter": 0,
+        "areaCountBefore": 4,
+        "areaCountAfter": 4,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 289,
+        "dimension": "Reality",
+        "coverageBefore": 32,
+        "coverageAfter": 32,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 290,
+        "dimension": "Reality",
+        "coverageBefore": 30,
+        "coverageAfter": 30,
+        "areaCountBefore": 2,
+        "areaCountAfter": 2,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 291,
+        "dimension": "Reality",
+        "coverageBefore": 6,
+        "coverageAfter": 6,
+        "areaCountBefore": 2,
+        "areaCountAfter": 2,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 311,
+        "dimension": "Reality",
+        "coverageBefore": 46,
+        "coverageAfter": 46,
+        "areaCountBefore": 4,
+        "areaCountAfter": 4,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 312,
+        "dimension": "Reality",
+        "coverageBefore": 10,
+        "coverageAfter": 10,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 313,
+        "dimension": "Reality",
+        "coverageBefore": 10,
+        "coverageAfter": 10,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 314,
+        "dimension": "Reality",
+        "coverageBefore": 50,
+        "coverageAfter": 50,
+        "areaCountBefore": 5,
+        "areaCountAfter": 5,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 315,
+        "dimension": "Reality",
+        "coverageBefore": 30,
+        "coverageAfter": 30,
+        "areaCountBefore": 2,
+        "areaCountAfter": 2,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 316,
+        "dimension": "Reality",
+        "coverageBefore": 52,
+        "coverageAfter": 52,
+        "areaCountBefore": 6,
+        "areaCountAfter": 6,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 317,
+        "dimension": "Reality",
+        "coverageBefore": 30,
+        "coverageAfter": 10,
+        "areaCountBefore": 2,
+        "areaCountAfter": 1,
+        "sameAreaLayout": false
+      },
+      {
+        "zone": 318,
+        "dimension": "Reality",
+        "coverageBefore": 32,
+        "coverageAfter": 32,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 319,
+        "dimension": "Reality",
+        "coverageBefore": 32,
+        "coverageAfter": 32,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 320,
+        "dimension": "Reality",
+        "coverageBefore": 32,
+        "coverageAfter": 32,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 321,
+        "dimension": "Reality",
+        "coverageBefore": 20,
+        "coverageAfter": 20,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 322,
+        "dimension": "Reality",
+        "coverageBefore": 10,
+        "coverageAfter": 10,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 323,
+        "dimension": "Reality",
+        "coverageBefore": 20,
+        "coverageAfter": 20,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 324,
+        "dimension": "Reality",
+        "coverageBefore": 10,
+        "coverageAfter": 10,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      }
+    ],
+    "D3": [
+      {
+        "zone": 0,
+        "dimension": "Dimension_17",
+        "coverageBefore": 0,
+        "coverageAfter": 0,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 0,
+        "dimension": "Dimension_18",
+        "coverageBefore": 0,
+        "coverageAfter": 0,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 0,
+        "dimension": "Dimension_19",
+        "coverageBefore": 0,
+        "coverageAfter": 0,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 0,
+        "dimension": "Dimension_20",
+        "coverageBefore": 0,
+        "coverageAfter": 0,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 0,
+        "dimension": "Reality",
+        "coverageBefore": 26,
+        "coverageAfter": 26,
+        "areaCountBefore": 3,
+        "areaCountAfter": 3,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 1,
+        "dimension": "Reality",
+        "coverageBefore": 64,
+        "coverageAfter": 64,
+        "areaCountBefore": 2,
+        "areaCountAfter": 2,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 2,
+        "dimension": "Reality",
+        "coverageBefore": 87,
+        "coverageAfter": 87,
+        "areaCountBefore": 4,
+        "areaCountAfter": 4,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 3,
+        "dimension": "Reality",
+        "coverageBefore": 32,
+        "coverageAfter": 32,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 4,
+        "dimension": "Reality",
+        "coverageBefore": 3,
+        "coverageAfter": 3,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 5,
+        "dimension": "Reality",
+        "coverageBefore": 53,
+        "coverageAfter": 53,
+        "areaCountBefore": 5,
+        "areaCountAfter": 5,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 6,
+        "dimension": "Reality",
+        "coverageBefore": 82,
+        "coverageAfter": 82,
+        "areaCountBefore": 5,
+        "areaCountAfter": 5,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 7,
+        "dimension": "Reality",
+        "coverageBefore": 70,
+        "coverageAfter": 70,
+        "areaCountBefore": 6,
+        "areaCountAfter": 6,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 8,
+        "dimension": "Reality",
+        "coverageBefore": 26,
+        "coverageAfter": 26,
+        "areaCountBefore": 4,
+        "areaCountAfter": 4,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 9,
+        "dimension": "Reality",
+        "coverageBefore": 55,
+        "coverageAfter": 55,
+        "areaCountBefore": 3,
+        "areaCountAfter": 3,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 10,
+        "dimension": "Reality",
+        "coverageBefore": 32,
+        "coverageAfter": 32,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 11,
+        "dimension": "Reality",
+        "coverageBefore": 20,
+        "coverageAfter": 20,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 12,
+        "dimension": "Reality",
+        "coverageBefore": 32,
+        "coverageAfter": 32,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 13,
+        "dimension": "Reality",
+        "coverageBefore": 20,
+        "coverageAfter": 20,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 14,
+        "dimension": "Reality",
+        "coverageBefore": 40,
+        "coverageAfter": 40,
+        "areaCountBefore": 3,
+        "areaCountAfter": 3,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 710,
+        "dimension": "Reality",
+        "coverageBefore": 42,
+        "coverageAfter": 42,
+        "areaCountBefore": 2,
+        "areaCountAfter": 2,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 722,
+        "dimension": "Reality",
+        "coverageBefore": 32,
+        "coverageAfter": 32,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      },
+      {
+        "zone": 723,
+        "dimension": "Reality",
+        "coverageBefore": 32,
+        "coverageAfter": 32,
+        "areaCountBefore": 1,
+        "areaCountAfter": 1,
+        "sameAreaLayout": true
+      }
+    ]
+  }
+}
