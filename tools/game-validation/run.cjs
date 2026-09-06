@@ -7,9 +7,10 @@ const bridge=path.join(logs,'bridge.log'),bep=path.join(runtime,'BepInEx/LogOutp
 const read=f=>fs.existsSync(f)?fs.readFileSync(f,'utf8'):'';
 const pause=ms=>new Promise(r=>setTimeout(r,ms));
 const stages=[['C1',2,0],['C2',2,1],['D1',3,0],['D2',3,1],['D3',3,2]];
+let processFailure='';
 async function waitState(allowed,offset,timeout=180000){
   const until=Date.now()+timeout;let last='';
-  while(Date.now()<until){const txt=read(bridge).slice(offset);const state=[...txt.matchAll(/STATE (\w+)/g)].at(-1)?.[1];
+  while(Date.now()<until){if(processFailure)throw Error(processFailure);const txt=read(bridge).slice(offset);const state=[...txt.matchAll(/STATE (\w+)/g)].at(-1)?.[1];
     if(state&&state!==last){console.log('STATE '+state);last=state;}
     if(allowed.includes(state))return state;
     if(txt.includes('FAIL ')||txt.includes('START_RESULT False'))throw Error(txt.slice(-2000));
@@ -32,8 +33,11 @@ async function main(){
     const list=dir=>fs.readdirSync(dir,{withFileTypes:true}).flatMap(e=>e.isDirectory()?list(path.join(dir,e.name)):[path.join(dir,e.name)]);
     if(fs.existsSync(modRoot))fs.writeFileSync(path.join(logs,name+'-inputs.json'),JSON.stringify(Object.fromEntries(list(modRoot).filter(f=>f.endsWith('.json')).map(f=>[path.relative(modRoot,f).replaceAll('\\','/'),require('node:crypto').createHash('sha256').update(fs.readFileSync(f)).digest('hex')])),null,2));
     console.log('BEGIN '+name);
+    processFailure='';
     const proc=spawn(path.join(runtime,'GTFO.exe'),['-screen-fullscreen','0','-screen-width','960','-screen-height','540','-logFile',path.join(logs,name+'-player.log')],{cwd:runtime,windowsHide:true,stdio:'ignore',env:{...process.env,ANARCHY_VALIDATION_LOGS:logs,ANARCHY_MOD_ROOT:modRoot}});
-    let exited=false;proc.on('exit',()=>exited=true);
+    let exited=false;
+    proc.on('exit',(code,signal)=>{exited=true;processFailure=`GTFO exited (code=${code}, signal=${signal})`;});
+    proc.on('error',error=>{exited=true;processFailure='GTFO launch failed: '+error.message;});
     try{
       await waitState(['NoLobby'],offset);
       fs.writeFileSync(path.join(logs,name+'-startup.log'),read(bep));
@@ -43,6 +47,7 @@ async function main(){
       const drop=read(bridge).length;await command('build');await waitState(['InLevel'],drop,300000);
       if(name==='C1'&&process.argv.includes('--advance-c1')){await command('advance-c1');await pause(70000);await command('check-c1-move');}
       await command('audit '+name);await pause(8000);
+      if(processFailure)throw Error(processFailure);
       const auditText=read(bridge).slice(drop);
       if(auditText.includes('FAIL ')||!auditText.includes('AUDIT_DONE '+name))throw Error('Runtime audit failed: '+auditText.slice(-2000));
       if(![...read(bridge).slice(drop).matchAll(/STATE (\w+)/g)].at(-1)?.[1].includes('InLevel'))throw Error('Did not remain InLevel after build');
@@ -55,7 +60,7 @@ async function main(){
     row.finishedAt=new Date().toISOString();row.durationMs=Date.now()-started;
     fs.writeFileSync(path.join(logs,name+'-result.json'),JSON.stringify(row,null,2));
     console.log(`RESULT ${name} ${row.status} errors=${row.errorLines.length} warnings=${row.warningCount} ${row.error||''}`);
-    try{await command('quit');const until=Date.now()+20000;while(!exited&&Date.now()<until)await pause(500);if(!exited)proc.kill();}catch{proc.kill();}
+    if(!exited){try{await command('quit');const until=Date.now()+20000;while(!exited&&Date.now()<until)await pause(500);if(!exited)proc.kill();}catch{proc.kill();}}
     await pause(2500);
   }
   if(anyFailed)process.exitCode=1;
