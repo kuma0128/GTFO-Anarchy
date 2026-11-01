@@ -807,12 +807,12 @@
             "Shard": "S1"
         },
         {
-            "Prefab": "Assets/Bundles/RLC_Mining/geo_64x64_mining_refinery_X_RLC_01.prefab",
+            "Prefab": "Assets/Bundles/RLC_Mining/Refinery_X_01/geo_64x64_mining_refinery_X_RLC_01.prefab",
             "SubComplex": 5,
             "Shard": "S1"
         },
         {
-            "Prefab": "Assets/Bundles/RLC_Mining/geo_64x64_mining_storage_I_RLC_01.prefab",
+            "Prefab": "Assets/Bundles/RLC_Mining/Storage_I_01/geo_64x64_mining_storage_I_RLC_01.prefab",
             "SubComplex": 5,
             "Shard": "S1"
         },

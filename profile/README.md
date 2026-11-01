@@ -17,6 +17,14 @@ Special thanks to my team (Scotch, Jonino, Cross) and friends.
 
 ## VERSION
 
+```1.1.7```
+
+- Updated for CheeseGeos 0.6.0 and GTFO-API 0.6.0 (BepInExPack_GTFO 3.2.4). CheeseGeos 0.6.0 changed its asset paths, so D3 needs this update.
+- Updated AdvancedWardenObjective 2.6.3, EnemyAnimationFix 1.5.0, MemoryLeakFix 1.3.10 and SnatcherBugFix 0.6.0.
+- Removed DoorEnemyFix, which has been deprecated on Thunderstore.
+- Please recreate your r2modman profile after updating.
+- This dependency combination has not been tested in game yet.
+
 ```1.1.6```
 
 - Fixed D3's exit fog reference and restored its scan position overrides.

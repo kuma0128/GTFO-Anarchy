@@ -1,5 +1,13 @@
 # CHANGELOG
 
+```1.1.7```
+
+- Update CheeseGeos to 0.6.0. Its prefabs moved into per-tile folders for GTFO-API 0.6.0's AssetAPI V2; update the D3 complex resource set and zone geomorphs (Refinery_X_RLC_01, Storage_I_RLC_01) and the unreleased E1 resource set to the new paths.
+- Update AdvancedWardenObjective 2.5.7 -> 2.6.3 (GTFO-API 0.6.0 / AmorLib 1.3.0 compatibility). This pulls in BepInExPack_GTFO 3.2.4, which now installs GTFO-API 0.6.0 as a separate package.
+- Update EnemyAnimationFix 1.4.8 -> 1.5.0 (adds OptionalNetworkAPI), MemoryLeakFix 1.3.9 -> 1.3.10 and SnatcherBugFix 0.5.0 -> 0.6.0.
+- Remove DoorEnemyFix 1.0.0 (deprecated on Thunderstore); direct dependencies now total 34.
+- Not yet validated in game: level generation, scan positions and AWO events with the new dependency combination still need to be checked.
+
 ```1.1.6```
 
 - D3: assign unique fog ID 225 to the exit transition; restore the missing scan override file with the correct main layout key; select Refinery for the exit zone.
