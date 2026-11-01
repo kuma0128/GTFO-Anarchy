@@ -1,4 +1,25 @@
-# Anarchy 1.1.6 validation
+# Anarchy validation
+
+## 1.1.7 dependency update
+
+Validated on 1 November 2026 (JST), with GTFO revision **34873**, using the same CLI tooling as 1.1.6 (CConsole 0.14.0 and the temporary validation plugin). The runtime contained the 41 packages in the [runtime dependency list](tools/runtime-dependencies.json), including BepInExPack_GTFO 3.2.4, GTFO-API 0.6.0, CheeseGeos 0.6.0, AdvancedWardenObjective 2.6.3, AmorLib 1.3.0, EnemyAnimationFix 1.5.0, OptionalNetworkAPI 1.3.2, MemoryLeakFix 1.3.10 and SnatcherBugFix 0.6.0. DoorEnemyFix was not installed.
+
+| Stage | Result | Scan instances checked | Error/Exception lines | Warning lines |
+| --- | --- | ---: | ---: | ---: |
+| C1 | InLevel; audit passed | 0 | 23 | 39 |
+| C2 | InLevel; audit passed | 4 | 259 | 101 |
+| D1 | InLevel; audit passed | 1 | 69 | 357 |
+| D2 | InLevel; audit passed | 9 | 3419 | 80 |
+| D3 | InLevel; audit passed | 5 | 126 | 48 |
+
+**19/19** configured scan instances were registered at their configured positions, and all sampled navigation-mesh points were within **0.0975 m**. Fog block 225 passed in all five runs.
+
+- **Compared with 1.1.6:** after normalizing paths and numbers, the build-phase Error/Exception lines of C2, D1, D2 and D3 are identical to the 1.1.6 run. C1 differs only in its entrance wave (two more spawn-node fallbacks, one ladder message, two fewer door-wave messages), which depends on the unattended player at the elevator as described below.
+- **New startup messages:** `Assembly OptionalNetworkAPI.dll is not registered in il2cpp` from Il2CppInterop when the new EnemyAnimationFix dependency loads (EnemyAnimationFix and all later plugins still loaded), and GTFO-API reporting that `mining_reactor_01_gencluster_v1.prefab` is already registered. CheeseGeos 0.6.0 ships byte-identical `markers-compressed` and `rlc_markers-compressed` bundles; the first registration is used.
+- **CheeseGeos paths:** a control run of D3 with deliberately missing paths logged `Asset ... did not loaded!` and `tile prefab is null`, and generation never finished (timeout). The passing run therefore loaded the new 0.6.0 paths. A second control run with the 1.1.6 paths also reached `InLevel`, because CheeseGeos 0.6.0 still ships its legacy `rlc_mining` bundle; that compatibility depends on the bundle remaining in future CheeseGeos versions.
+- **Not covered:** the same limits as 1.1.6 apply. AWO 2.6 event behaviour, snatcher capture/release, warden intel across consecutive expeditions (WardenIntelOhBehave and MemoryLeakFix 1.3.10 now patch the same cleanup) and multiplayer synchronization were not tested.
+
+## 1.1.6 validation
 
 Validated on 7 September 2026 (JST), with GTFO revision **34873**, Unity **2019.4.21f1**, on Windows. The release fixes data-loading and level-generation issues found while updating the older Anarchy package.
 

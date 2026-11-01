@@ -23,7 +23,7 @@ Special thanks to my team (Scotch, Jonino, Cross) and friends.
 - Updated AdvancedWardenObjective 2.6.3, EnemyAnimationFix 1.5.0, MemoryLeakFix 1.3.10 and SnatcherBugFix 0.6.0.
 - Removed DoorEnemyFix, which has been deprecated on Thunderstore.
 - Please recreate your r2modman profile after updating.
-- This dependency combination has not been tested in game yet.
+- C1, C2, D1, D2 and D3 were built in game with this dependency combination, and all 19 fixed scan positions passed. Full mission clears and multiplayer were not tested.
 
 ```1.1.6```
 
