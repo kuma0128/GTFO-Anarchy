@@ -17,7 +17,61 @@ Validated on 1 November 2026 (JST), with GTFO revision **34873**, using the same
 - **Compared with 1.1.6:** after normalizing paths and numbers, the build-phase Error/Exception lines of C2, D1, D2 and D3 are identical to the 1.1.6 run. C1 differs only in its entrance wave (two more spawn-node fallbacks, one ladder message, two fewer door-wave messages), which depends on the unattended player at the elevator as described below.
 - **New startup messages:** `Assembly OptionalNetworkAPI.dll is not registered in il2cpp` from Il2CppInterop when the new EnemyAnimationFix dependency loads (EnemyAnimationFix and all later plugins still loaded), and GTFO-API reporting that `mining_reactor_01_gencluster_v1.prefab` is already registered. CheeseGeos 0.6.0 ships byte-identical `markers-compressed` and `rlc_markers-compressed` bundles; the first registration is used.
 - **CheeseGeos paths:** a control run of D3 with deliberately missing paths logged `Asset ... did not loaded!` and `tile prefab is null`, and generation never finished (timeout). The passing run therefore loaded the new 0.6.0 paths. A second control run with the 1.1.6 paths also reached `InLevel`, because CheeseGeos 0.6.0 still ships its legacy `rlc_mining` bundle; that compatibility depends on the bundle remaining in future CheeseGeos versions.
-- **Not covered:** the same limits as 1.1.6 apply. AWO 2.6 event behaviour, snatcher capture/release, warden intel across consecutive expeditions (WardenIntelOhBehave and MemoryLeakFix 1.3.10 now patch the same cleanup) and multiplayer synchronization were not tested.
+- **Not covered by the build runs:** the same limits as 1.1.6 apply. Warden events, snatcher capture/release and warden intel across consecutive expeditions were checked afterwards (next section); full mission clears and multiplayer synchronization were not tested.
+
+## 1.1.7 events, snatchers and warden intel
+
+Checked on 3 November 2026 (JST) with the same runtime, GTFO revision **34873**, using `tools/game-validation/checks.cjs` and the checks added to the validation plugin (`RuntimeChecks.cs`). God mode was on and the game ran at normal speed (`TimeScale 1`).
+
+### Warden events (AdvancedWardenObjective 2.6.3)
+
+AWO hooks the game's event coroutine. It takes over only its own event types (10000 and above) and four vanilla types when they use fields the game ignores. In C1–D3, Anarchy has one AWO event, `CloseSecurityDoor` in D1 ZONE 7 `EventsOnOpenDoor` (it closes the ZONE 4 door behind the team), and no fields that trigger AWO's vanilla overrides. Every other event passes through the hook to the game's own executor.
+
+Every warden event of the built levels (zone and terminal command events, objective events including chained objectives and reactor waves) was run one at a time through `WardenObjectiveManager.CheckAndExecuteEventsOnTrigger`, and its effect was checked. Delays were cleared for the call, so delayed timing itself was not tested.
+
+| Stage | Events | EventBreak (not run) | Effect confirmed | Logged by AWO's hook |
+| --- | ---: | ---: | ---: | ---: |
+| C1 | 12 | 0 | 12 | 12 |
+| C2 | 25 | 1 | 22 | 24 |
+| D1 | 49 | 3 | 46 | 46 |
+| D2 | 34 | 0 | 34 | 34 |
+| D3 | 23 | 0 | 22 | 23 |
+| **Total** | **143** | **4** | **136 / 139** | **139 / 139** |
+
+- **Types covered:** SpawnEnemyWave 35, OpenSecurityDoor 14, UnlockSecurityDoor 13, StopEnemyWaves 11, UpdateCustomSubObjective 9, AllLightsOff 7, SetFogSetting 5, DimensionWarpTeam 4, AllLightsOn 3, DimensionFlashTeam 3, ForceCompleteObjective 2, ActivateChainedPuzzle 2, CloseSecurityDoor (AWO) 1, and 30 events that only show warden intel. Every event with warden intel sent it to the HUD.
+- **D1 played through its own triggers:** opening the ZONE 7 door showed "Reboot the alarm system…" and AWO closed the ZONE 4 door (Closed, not traversable). Typing `REBOOT_SECURITY_OVERRIDE` at the ZONE 7 terminal reopened it, and "Alarms are successfully deactivated." followed 5 s later. Walking into the first ExtraObjectiveSetup security sensor turned the lights off and started its wave; the lights came back on about 20 s later.
+- **Terminal command scans:** both ActivateChainedPuzzle events belong to terminal commands (C2 `OVERRIDE_LOCKDOWN`, D2 dimension 1 `COPY_GENOME_DB`). Typing each command at its terminal started its scan and a wave within 5 s.
+- **Not shown on the HUD (existing data, not AWO):** the three UpdateCustomSubObjective events whose text is written inline (C2 `EventsOnElevatorLand[0]` and `EventsOnActivate[16]`, D3 chain objective `EventsOnActivate[0]`). The objective state syncs custom sub-objectives as TextDataBlock IDs (`pWardenObjectiveInteraction.newCustomSubObjectiveTextID`), and inline text has ID 0. D1's sub-objectives, which reference TextDataBlocks, are shown. AWO does not handle this event type.
+- **Data note (existing):** C1 chain objective `EventsOnGotoWin[2]` starts a wave with settings 111111 ("Trickle 4-30 SSpB 2"). The game reads the ID as 45575 and logs `SurvivalWave got no SurvivalWaveSettings with ID 45575`, so this exit wave has no settings. IDs above 65535 do not survive.
+- **Logs:** the error lines during the run are the game's own messages (their text is in the game's metadata, not in any plugin): `OnDoorIsOpened: LinkedToZoneData`, `OpenSecurityDoorWithActiveEnemyWave`, spawn-node fallbacks, and, in C1, an out-of-range lookup of `Dimension_1` while a door's zone events ran. No exception came from AWO.
+- **AWO 2.6.4** (released 3 November 2026, requires GTFO-API 0.6.1) fixes delayed AWO-handled events that fire before `InLevel`, such as events on elevator land. Anarchy's elevator-land events are vanilla types that AWO passes through; with 2.6.3 they ran on landing in C2 and D1.
+
+### Snatcher capture and release (SnatcherBugFix 0.6.0)
+
+In D3, a snatcher (enemy 46) was spawned 7 m in front of the idle player, once for each way out.
+
+| Release | Capture | Back in reality | Screen cover cleared | Standing again | End state |
+| --- | --- | --- | --- | --- | --- |
+| Killed 4 s after capture | Moved to the arena dimension (Dimension_20) | 0.2 s after the kill | With the warp | 2.3 s after the kill | Stand, alive, 0.06 m from the navigation mesh |
+| Spat out | Same | 5.6 s after capture | 0.3 s later | 2.4 s after the warp | Stand, alive, 0.08 m from the navigation mesh |
+
+The pouncer data gives consume 0.23 s, held start 1 s, maximum hold 4 s and spit-out 1.4 s, which matches the spit-out time. While a player is held, Unity logs `ArgumentNullException: Value cannot be null. Parameter name: ps` (49–63 lines per run). The same happens with SnatcherBugFix 0.5.0, with no SnatcherBugFix, and with MemoryLeakFix 1.3.9 plus EnemyAnimationFix 1.4.8, so it does not come from the 1.1.7 updates. Its source was not identified (no stack trace). Capture and release behaved the same in all four setups.
+
+### Warden intel across consecutive expeditions
+
+One GTFO process dropped into D1 three times. In each drop, three of D1's warden intel messages were shown back to back 25 s after landing, and the expedition was aborted while two of them were still queued. The game cannot start a level from the lobby an abort returns to, so the run left the lobby and hosted a new one before the next drop. The HUD was sampled every 0.2 s.
+
+| Setup | Drop 1 | Drop 2 | Drop 3 | Queue after each abort |
+| --- | --- | --- | --- | --- |
+| As released (WardenIntelOhBehave, MemoryLeakFix 1.3.10) | Shown | Shown | Shown | 2 → 0 |
+| Without WardenIntelOhBehave (MemoryLeakFix 1.3.10) | Shown | Shown | Shown | 2 → 0 |
+| Control: without WardenIntelOhBehave, MemoryLeakFix 1.3.9 | Shown | **Nothing shown** | **Nothing shown** | 2 → 2, 9 → 2, 16 → 9 |
+
+"Shown" means the four landing messages (the game's objective intro and Anarchy's "Find the Data Cube in ZONE 147") and the first queued message reached the HUD. The control run reproduces the bug: the queue is left over and nothing appears on the next drops. MemoryLeakFix 1.3.10 alone clears the queue at level cleanup, as WardenIntelOhBehave does.
+
+### Not covered
+
+Full mission clears, checkpoints, multiplayer synchronization, delayed event timing, the natural triggers of events outside D1 (they were run directly), and the security sensors of C2, D2 and D3.
 
 ## 1.1.6 validation
 

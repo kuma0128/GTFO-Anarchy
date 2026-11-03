@@ -140,6 +140,22 @@ node tools/game-validation/command.cjs "$testRoot/logs" 'quit'
 
 タイムアウト時は `command.request` を残します。ゲームが後から受信する可能性があるため、ゲームとログを確認してから再開してください。コントローラーが終了処理で強制終了する対象は、その実行で起動したGTFOプロセスです。
 
+## イベント・スナッチャー・Warden Intelを検査する
+
+1.1.7で追加した検査です。生成後に `TimeScale 1` を送ってから実行します（CConsoleのFast Elevatorが、着地後もゲームを高速のまま残すため）。
+
+```powershell
+node tools/game-validation/checks.cjs $testRoot events 'C1,C2,D1,D2,D3'
+node tools/game-validation/checks.cjs $testRoot snatcher D3
+node tools/game-validation/checks.cjs $testRoot intel 3 --label intel-shipped
+```
+
+- `events`: 生成したレベルのゾーン、端末コマンド、目標（連鎖目標とReactorWavesを含む）に設定されたイベントを1件ずつ、ゲームと同じ `WardenObjectiveManager.CheckAndExecuteEventsOnTrigger` で実行し、扉、照明、霧、プレイヤーのディメンション、敵ウェーブ、目標表示、Warden Intelの変化を確認します。`currentDuration` を渡すとチェックポイント復帰と同じ扱いになりイベントが実行されないため、Delayは実行中だけ0にして待機後に元へ戻します。EventBreakは目標の区切りなので実行しません。BepInExログの `We got Type N on a Warden Event` で、各イベントがAWOのフックを通ったことも確認します。D1ではゾーン7の扉を開けてZONE 4の扉が閉まること（AWOのCloseSecurityDoor）、ゾーン7の端末で `REBOOT_SECURITY_OVERRIDE` を入力して再び開くこと、セキュリティセンサーに入ると照明と敵ウェーブが動くことを確かめます。C2とD2では、スキャンを起動する端末コマンドを入力します。端末はプレイヤーが使用中のときだけ出力を進め、出力の最後にコマンドのイベントを実行するため、端末の前へ移動して `OnInteract` してから入力します。
+- `snatcher`: プレイヤーの前にスナッチャー（敵ID 46）を出し、捕獲中に倒す場合と、時間切れで吐き出される場合を確かめます。解放後に元のディメンションへ戻ること、画面の覆いが消えること、立ち上がること、NavMesh上にいることを判定します。
+- `intel`: 同じGTFOプロセスでD1へ指定回数ドロップします。毎回、着地から25秒後にWarden Intelを3件続けて表示させ、待ち行列が残った状態で中断します。中断後のロビーからはレベルを開始できないため、ロビーを抜けて新しいロビーを作り、次のドロップで着地時のWarden IntelがHUDに出るかを0.2秒ごとの状態から判定します。
+
+結果は `logs/<label>-result.json`、ゲーム内の記録は `logs/<label>-<stage>-bridge.log`、BepInExログは `-checks.log` に保存します。
+
 ## 結果の読み方
 
 ゲームが生成できることと、全目標をクリアできることは別の検査です。動的イベントの全経路、チェックポイント、途中参加、マルチプレイ同期はこのツールだけでは検証できません。残るエラーログの分類と1.1.6の結果は [VALIDATION.md](../../VALIDATION.md) を参照してください。

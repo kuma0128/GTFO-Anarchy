@@ -6,7 +6,7 @@
 - Update AdvancedWardenObjective 2.5.7 -> 2.6.3 (GTFO-API 0.6.0 / AmorLib 1.3.0 compatibility). This pulls in BepInExPack_GTFO 3.2.4, which now installs GTFO-API 0.6.0 as a separate package.
 - Update EnemyAnimationFix 1.4.8 -> 1.5.0 (adds OptionalNetworkAPI), MemoryLeakFix 1.3.9 -> 1.3.10 and SnatcherBugFix 0.5.0 -> 0.6.0.
 - Remove DoorEnemyFix 1.0.0 (deprecated on Thunderstore); direct dependencies now total 34.
-- Validated in game (GTFO revision 34873): C1, C2, D1, D2 and D3 reach InLevel and all 19 fixed scan positions pass with the new dependency combination; see VALIDATION.md. AWO event behaviour, full mission clears and multiplayer were not tested.
+- Validated in game (GTFO revision 34873): C1, C2, D1, D2 and D3 reach InLevel and all 19 fixed scan positions pass with the new dependency combination. Each stage's warden events (including the AWO door event in D1), snatcher capture/release in D3 and warden intel across three consecutive D1 drops were also checked; see VALIDATION.md. Full mission clears and multiplayer were not tested.
 
 ```1.1.6```
 
