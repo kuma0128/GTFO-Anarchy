@@ -247,6 +247,20 @@ internal static partial class RuntimeChecks
         var reactor = UnityEngine.Object.FindObjectsOfType<LG_WardenObjective_Reactor>().FirstOrDefault(r => r.OriginLayer == layer);
         if (reactor == null) { Driver.Record("OBJECTIVE_STEP " + Json(new { layer = layer.ToString(), step = "no reactor" })); yield break; }
         yield return TypeCommand(driver, reactor.m_terminal, "REACTOR_STARTUP");
+        // The command starts the objective's ChainedPuzzleToActive at the reactor; the startup begins once it is solved.
+        if (WardenObjectiveManager.TryGetWardenObjectiveDataForLayer(layer, chain, out var data) && data.ChainedPuzzleToActive != 0)
+        {
+            ChainedPuzzleInstance? scan = null;
+            for (int i = 0; i < 30 && scan == null; i++)
+            {
+                scan = FindScan(data.ChainedPuzzleToActive, reactor.transform.position);
+                if (scan == null) yield return Wait(0.5f);
+            }
+            Driver.Record("REACTOR_SCAN " + Json(new { puzzle = data.ChainedPuzzleToActive, found = scan != null, active = scan?.IsActive }));
+            reactor.m_terminal.ExitFPSView();
+            if (scan != null) yield return SolveScan(scan);
+            yield return UseTerminal(driver, reactor.m_terminal);
+        }
         string last = "", verified = "";
         float until = Time.realtimeSinceStartup + 40 * 60, nextKill = 0;
         while (Time.realtimeSinceStartup < until && !Solved(layer, chain))
@@ -268,27 +282,38 @@ internal static partial class RuntimeChecks
         reactor.m_terminal.ExitFPSView();
     }
 
+    // An unsolved objective scan with this ID: the one closest to a point, or the last one created. Door scans are left to the doors.
+    private static ChainedPuzzleInstance? FindScan(uint id, Vector3? near = null)
+    {
+        var doorPuzzles = Builder.CurrentFloor.allZones.ToArray().Select(z => ZoneDoor(z)?.m_locks?.ChainedPuzzleToSolve?.Pointer ?? IntPtr.Zero).ToHashSet();
+        var scans = ChainedPuzzleManager.Current.m_instances.ToArray()
+            .Where(p => p != null && !p.IsSolved && p.Data != null && p.Data.persistentID == id && !doorPuzzles.Contains(p.Pointer));
+        if (near == null) return scans.LastOrDefault();
+        return scans.OrderBy(p => p.m_sourceArea?.m_courseNode != null ? Vector3.Distance(p.m_sourceArea.m_courseNode.Position, near.Value) : float.MaxValue).FirstOrDefault();
+    }
+
+    private static IEnumerator SolveScan(ChainedPuzzleInstance scan)
+    {
+        var area = scan.m_sourceArea?.m_courseNode?.Position;
+        if (area.HasValue && NavMesh.SamplePosition(area.Value, out var hit, 4f, -1)) LocalPlayer.TeleportTo(hit.position);
+        yield return Wait(2);
+        if (!scan.IsActive) scan.AttemptInteract(eChainedPuzzleInteraction.Activate);
+        yield return Wait(3);
+        scan.AttemptInteract(eChainedPuzzleInteraction.Solve);
+    }
+
     private static IEnumerator Exit(Driver driver, string stage)
     {
         WardenObjectiveManager.TryGetLastWardenObjectiveDataForLayer(LG_LayerType.MainLayer, out var last);
         uint exitScan = last?.ChainedPuzzleAtExit ?? 0;
-        var doorPuzzles = Builder.CurrentFloor.allZones.ToArray().Select(z => ZoneDoor(z)?.m_locks?.ChainedPuzzleToSolve?.Pointer ?? IntPtr.Zero).ToHashSet();
         ChainedPuzzleInstance? scan = null;
         for (int i = 0; i < 120 && scan == null; i++)
         {
-            scan = ChainedPuzzleManager.Current.m_instances.ToArray().LastOrDefault(p => p != null && !p.IsSolved && p.Data != null && p.Data.persistentID == exitScan && !doorPuzzles.Contains(p.Pointer));
+            scan = FindScan(exitScan);
             if (scan == null) yield return Wait(0.5f);
         }
         Driver.Record("EXIT_SCAN " + Json(new { exitScan, found = scan != null, win = WardenObjectiveManager.WinCondition(LG_LayerType.MainLayer).ToString() }));
-        if (scan != null)
-        {
-            var area = scan.m_sourceArea?.m_courseNode?.Position;
-            if (area.HasValue && NavMesh.SamplePosition(area.Value, out var hit, 4f, -1)) LocalPlayer.TeleportTo(hit.position);
-            yield return Wait(2);
-            scan.AttemptInteract(eChainedPuzzleInteraction.Activate);
-            yield return Wait(3);
-            scan.AttemptInteract(eChainedPuzzleInteraction.Solve);
-        }
+        if (scan != null) yield return SolveScan(scan);
         for (int i = 0; i < 120 && GameStateManager.CurrentStateName != eGameStateName.ExpeditionSuccess; i++) yield return Wait(0.5f);
         var layers = LayerOrder.Where(l => WardenObjectiveManager.TryGetWardenObjectiveDataForLayer(l, 0, out _)).ToDictionary(l => l.ToString(), l => LayerStatus(l).ToString());
         Driver.Record("CLEAR_RESULT " + Json(new { stage, success = GameStateManager.CurrentStateName == eGameStateName.ExpeditionSuccess, state = GameStateManager.CurrentStateName.ToString(), layers, delays = EventTiming.Summary() }));

@@ -177,7 +177,7 @@ async function clear(selection){
       closed:records(bridgeText,'DOORS_CLOSED').map(JSON.parse).at(-1),
       commands:records(bridgeText,'COMMAND').filter(s=>s.startsWith('{')).map(JSON.parse),
       objectives:records(bridgeText,'OBJECTIVE_(?:BEGIN|STEP|DONE)').map(JSON.parse),
-      reactor:records(bridgeText,'REACTOR(?:_VERIFY)?'),
+      reactor:records(bridgeText,'REACTOR(?:_VERIFY|_SCAN)?'),
       exit:records(bridgeText,'EXIT_SCAN').map(JSON.parse),
       delays:{count:delays.length,maxError:delays.reduce((m,d)=>Math.max(m,Math.abs(d.actual-d.delay)),0),longest:delays.reduce((m,d)=>Math.max(m,d.delay),0)},
       states:[...bridgeText.matchAll(/STATE (\w+)/g)].map(m=>m[1]),
@@ -196,6 +196,8 @@ async function fail(stage){
   const at=read(bridge).length;
   await command('God false');await command('Suicide');
   const failed=await waitState(['ExpeditionFail'],at,120000).catch(e=>String(e));
+  // The failure screen returns to the lobby when a player presses its button.
+  if(failed==='ExpeditionFail')await command('fail-return');
   const back=await waitState(['Lobby','NoLobby'],at,180000).catch(e=>String(e));
   const states=[...read(bridge).slice(at).matchAll(/STATE (\w+)/g)].map(m=>m[1]);
   console.log(`FAIL ${stage} failState=${failed} after=${back} states=${states.join('>')}`);

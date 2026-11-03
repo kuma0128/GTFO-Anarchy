@@ -32,6 +32,7 @@ internal static partial class RuntimeChecks
             "terminal" when words.Length == 6 => TerminalCommand(driver, words),
             "clear" when words.Length == 2 => Clear(driver, words[1]),
             "sensor" when words.Length == 3 => Sensor(driver, words[1], int.Parse(words[2])),
+            "fail-return" => FailReturn(),
             "snatcher" when words.Length == 2 && words[1] is "kill" or "timeout" => Snatcher(driver, words[1]),
             "intel-burst" when words.Length == 2 => IntelBurst(int.Parse(words[1])),
             _ => null,
@@ -235,7 +236,8 @@ internal static partial class RuntimeChecks
             // Other sources may start new waves meanwhile; the waves running before the event must be gone.
             10 => (!after.Waves.Intersect(before.Waves).Any(), $"waves running before {before.Waves.Length}, still running {after.Waves.Intersect(before.Waves).Count()}, new {after.Waves.Except(before.Waves).Count()}"),
             // The objective state syncs custom sub-objectives by TextDataBlock ID, so text written inline (ID 0) never reaches the HUD.
-            11 when e.CustomSubObjective != null && e.CustomSubObjective.Id == 0 && subObjective.Length > 0 => (false, $"inline text with TextDataBlock ID 0 cannot be synced; HUD {JsonSerializer.Serialize(after.Hud)}"),
+            // LocalizedText overloads != and throws on null, so match the pattern instead.
+            11 when e.CustomSubObjective is { Id: 0 } && subObjective.Length > 0 => (false, $"inline text with TextDataBlock ID 0 cannot be synced; HUD {JsonSerializer.Serialize(after.Hud)}"),
             // The HUD must show the event's own text; an update with empty text does not count.
             11 => (subObjective.Length == 0 ? after.CustomSub > before.CustomSub : Plain(LastCustomSub) == subObjective || after.Hud.Contains(subObjective),
                 $"custom sub-objective updates {before.CustomSub} -> {after.CustomSub}, HUD {JsonSerializer.Serialize(after.Hud)}"),
@@ -330,6 +332,13 @@ internal static partial class RuntimeChecks
     // (and runs the command's events at the end of its output) while someone is using it.
     private static IEnumerator TypeCommand(Driver driver, LG_ComputerTerminal terminal, string command)
     {
+        yield return UseTerminal(driver, terminal);
+        terminal.m_command.EvaluateInput(command);
+    }
+
+    // Stand at a terminal and use it; terminals only advance their output while a player is using them.
+    private static IEnumerator UseTerminal(Driver driver, LG_ComputerTerminal terminal)
+    {
         var player = LocalPlayer;
         var dimension = terminal.SpawnNode.m_dimension.DimensionIndex;
         if (player.DimensionIndex != dimension)
@@ -342,7 +351,6 @@ internal static partial class RuntimeChecks
         yield return Wait(2);
         terminal.OnInteract(player);
         yield return Wait(2);
-        terminal.m_command.EvaluateInput(command);
     }
 
     // terminal <dimension> <layer> <zone> <command> <seconds>: run a unique command and follow what it starts.
@@ -378,6 +386,12 @@ internal static partial class RuntimeChecks
         var player = LocalPlayer;
         var home = player.Position;
         void Step(string step) => Driver.Record("SENSOR " + Json(new { stage, index, step, lights = LightsOn(), waves = SurvivalWaves(), x = player.Position.x, y = player.Position.y, z = player.Position.z }));
+        // An earlier sensor may have left the lights off; turn them on so this sensor's own change shows.
+        if (!LightsOn())
+        {
+            EnvironmentStateManager.AttemptSetExpeditionLightMode(true);
+            yield return Wait(2);
+        }
         Step("start");
         player.TeleportTo(target);
         yield return Wait(3);
@@ -392,6 +406,21 @@ internal static partial class RuntimeChecks
         }
         driver.RunConsole("KillEnemies Everything");
         Driver.Record($"SENSOR_DONE {stage} {index}");
+    }
+
+    // The failure screen waits for a player to press its return-to-lobby button; press it the same way.
+    private static IEnumerator FailReturn()
+    {
+        CellMenu.CM_PageExpeditionFail? page = null;
+        for (int i = 0; i < 120; i++)
+        {
+            page = UnityEngine.Object.FindObjectOfType<CellMenu.CM_PageExpeditionFail>();
+            if (page?.m_btnGoToLobby != null && page.m_btnGoToLobby.gameObject.activeInHierarchy) break;
+            yield return Wait(0.5f);
+        }
+        var button = page?.m_btnGoToLobby;
+        Driver.Record("FAIL_RETURN " + Json(new { page = page != null, button = button != null, shown = button != null && button.gameObject.activeInHierarchy }));
+        button?.OnBtnPressCallback?.Invoke(button.ID);
     }
 
     private static IEnumerator Snatcher(Driver driver, string mode)

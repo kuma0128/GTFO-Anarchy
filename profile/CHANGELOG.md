@@ -10,7 +10,7 @@
 - C1: give the exit wave valid wave settings (ID 111111 did not fit in 16 bits, so the wave had none), point the win-condition StopEnemyWaves event at reality instead of a missing dimension, and add Refinery entries to the resource set (no more fallback to ALL; same layout).
 - C2: OVERRIDE_LOCKDOWN now names ZONE 106, the zone it opens, in its description and intel (it said ZONE 107), and its scan uses the zone's bioscan points instead of a missing world object.
 - Remove unused chained puzzles (256, 275-277), dimensions (2, 9-12) and an enemy population entry (enemy 70) that referenced missing data, and clear the missing third layout of the unreleased E1.
-- Validated in game (GTFO revision 34873): C1, C2, D1, D2 and D3 reach InLevel and all 19 fixed scan positions pass with the new dependencies. C2, D1, D2 and D3 were cleared through their own doors, terminal commands, objectives and exit scans, with delayed events firing within 0.3 s of their delays. Warden events, snatcher capture/release and warden intel on repeated drops were also checked; see VALIDATION.md. The C1 clear and multiplayer were not tested.
+- Validated in game (GTFO revision 34873): C1, C2, D1, D2 and D3 reach InLevel and all 19 fixed scan positions pass with the new dependencies. All five were cleared through their own doors, terminal commands, objectives (including the C1 reactor startup and its verification codes) and exit scans, with delayed events firing within 0.3 s of their delays. Warden events, all 19 security sensors, snatcher capture/release, warden intel on repeated drops and the return to the lobby after a team wipe were also checked; see VALIDATION.md. Multiplayer was not tested.
 
 ```1.1.6```
 
