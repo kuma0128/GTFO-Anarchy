@@ -52,7 +52,7 @@
                 "ChainPuzzle": 0,
                 "UseStaticBioscanPoints": false,
                 "Layer": 0,
-                "DimensionIndex": 1,
+                "DimensionIndex": 0,
                 "LocalIndex": 0,
                 "Delay": 34.0,
                 "Duration": 0.0,

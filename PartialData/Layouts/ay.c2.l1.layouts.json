@@ -1177,7 +1177,7 @@
                     "UniqueCommands": [
                         {
                             "Command": "OVERRIDE_LOCKDOWN",
-                            "CommandDesc": "Disrupt security mainframe to access Zone 107.",
+                            "CommandDesc": "Disrupt security mainframe to access Zone 106.",
                             "PostCommandOutputs": [
                                 {
                                     "LineType": 10,
@@ -1250,7 +1250,7 @@
                                     "Delay": 120.0,
                                     "Duration": 0.0,
                                     "ClearDimension": false,
-                                    "WardenIntel": "Door to [ZONE_8] opened!",
+                                    "WardenIntel": "Door to [ZONE_7] opened!",
                                     "CustomSubObjectiveHeader": 0,
                                     "CustomSubObjective": 0,
                                     "SoundID": 0,
@@ -1331,7 +1331,7 @@
                                     },
                                     "Trigger": 0,
                                     "ChainPuzzle": 10101,
-                                    "UseStaticBioscanPoints": false,
+                                    "UseStaticBioscanPoints": true,
                                     "Layer": 0,
                                     "DimensionIndex": 0,
                                     "LocalIndex": 0,

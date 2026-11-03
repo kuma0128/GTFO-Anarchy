@@ -55,7 +55,7 @@
                 "ClearDimension": false,
                 "WardenIntel": 0,
                 "CustomSubObjectiveHeader": 0,
-                "CustomSubObjective": "Proceed to <color=orange>[ZONE_12]</color> and Escape.",
+                "CustomSubObjective": 1584,
                 "SoundID": 0,
                 "SoundSubtitle": 0,
                 "DialogueID": 0,
