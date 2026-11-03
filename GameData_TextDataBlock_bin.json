@@ -149724,6 +149724,286 @@
       "name": "LevelLayoutData_R5A3_L1_SecurityDoorErrorAlarm",
       "internalEnabled": true,
       "persistentID": 1430376640
+    },
+    {
+      "SkipLocalization": false,
+      "MachineTranslation": false,
+      "English": "Proceed to <color=orange> Zone 106 </color> and locate uplink terminal.",
+      "Description": "",
+      "CharacterMetaData": 1,
+      "French": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Italian": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "German": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Spanish": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Russian": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Portuguese_Brazil": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Polish": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Japanese": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Korean": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Chinese_Traditional": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Chinese_Simplified": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "ExportVersion": 1,
+      "ImportVersion": 0,
+      "name": "WardenObjectiveData.Anarchy_C2_L1_OBJ.CustomSubObjective_Uplink",
+      "internalEnabled": true,
+      "persistentID": 1580
+    },
+    {
+      "SkipLocalization": false,
+      "MachineTranslation": false,
+      "English": "Proceed immediately to Zone 109 and escape from here.",
+      "Description": "",
+      "CharacterMetaData": 1,
+      "French": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Italian": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "German": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Spanish": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Russian": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Portuguese_Brazil": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Polish": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Japanese": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Korean": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Chinese_Traditional": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Chinese_Simplified": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "ExportVersion": 1,
+      "ImportVersion": 0,
+      "name": "WardenObjectiveData.Anarchy_C2_L1_OBJ.CustomSubObjective_Escape",
+      "internalEnabled": true,
+      "persistentID": 1581
+    },
+    {
+      "SkipLocalization": false,
+      "MachineTranslation": false,
+      "English": "Find the Data Cube in <color=orange>[ZONE_3]</color>",
+      "Description": "",
+      "CharacterMetaData": 1,
+      "French": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Italian": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "German": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Spanish": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Russian": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Portuguese_Brazil": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Polish": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Japanese": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Korean": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Chinese_Traditional": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Chinese_Simplified": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "ExportVersion": 1,
+      "ImportVersion": 0,
+      "name": "WardenObjectiveData.Anarchy_D1_L1_OBJ.CustomSubObjective_DataCube_2",
+      "internalEnabled": true,
+      "persistentID": 1582
+    },
+    {
+      "SkipLocalization": false,
+      "MachineTranslation": false,
+      "English": "Find the Data Cube in <color=orange>[ZONE_8]</color>",
+      "Description": "",
+      "CharacterMetaData": 1,
+      "French": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Italian": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "German": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Spanish": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Russian": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Portuguese_Brazil": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Polish": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Japanese": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Korean": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Chinese_Traditional": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Chinese_Simplified": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "ExportVersion": 1,
+      "ImportVersion": 0,
+      "name": "WardenObjectiveData.Anarchy_D1_L1_OBJ.CustomSubObjective_DataCube_3",
+      "internalEnabled": true,
+      "persistentID": 1583
+    },
+    {
+      "SkipLocalization": false,
+      "MachineTranslation": false,
+      "English": "Proceed to <color=orange>[ZONE_12]</color> and Escape.",
+      "Description": "",
+      "CharacterMetaData": 1,
+      "French": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Italian": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "German": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Spanish": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Russian": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Portuguese_Brazil": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Polish": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Japanese": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Korean": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Chinese_Traditional": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "Chinese_Simplified": {
+        "Translation": "",
+        "ShouldTranslate": true
+      },
+      "ExportVersion": 1,
+      "ImportVersion": 0,
+      "name": "WardenObjectiveData.Anarchy_D3_L1_CHAIN.CustomSubObjective_Escape",
+      "internalEnabled": true,
+      "persistentID": 1584
     }
   ],
   "LastPersistentID": 4269828931

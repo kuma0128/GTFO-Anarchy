@@ -17,6 +17,7 @@ public sealed class Plugin : BasePlugin
     {
         Application.runInBackground = true;
         Directory.CreateDirectory(Driver.LogRoot);
+        new HarmonyLib.Harmony("local.anarchy.validation").PatchAll();
         AddComponent<Driver>();
     }
 }
@@ -24,14 +25,20 @@ public sealed class Plugin : BasePlugin
 public sealed class Driver : MonoBehaviour
 {
     internal static readonly string LogRoot = Path.GetFullPath(Environment.GetEnvironmentVariable("ANARCHY_VALIDATION_LOGS") ?? Path.Combine(Paths.GameRootPath, "..", "logs"));
-    private static readonly string ModRoot = Path.GetFullPath(Environment.GetEnvironmentVariable("ANARCHY_MOD_ROOT") ?? Path.Combine(Paths.PluginPath, "Anarchy"));
+    internal static readonly string ModRoot = Path.GetFullPath(Environment.GetEnvironmentVariable("ANARCHY_MOD_ROOT") ?? Path.Combine(Paths.PluginPath, "Anarchy"));
     private static readonly string Root = LogRoot;
     private static readonly string Request = Path.Combine(Root, "command.request");
     private string previousState = "";
     private float nextPoll;
     private CustomCmdContext? context;
     public Driver(IntPtr pointer) : base(pointer) { }
-    private static void Record(string message)
+    internal void RunConsole(string command)
+    {
+        context ??= (CustomCmdContext)Activator.CreateInstance(typeof(CustomCmdContext), BindingFlags.Instance | BindingFlags.NonPublic, null, new object?[] { null }, null)!;
+        context.ExecuteCommand(command);
+        Record("DISPATCHED " + command);
+    }
+    internal static void Record(string message)
     {
         string line = $"{DateTime.UtcNow:O} {message}";
         File.AppendAllText(Path.Combine(Root, "bridge.log"), line + Environment.NewLine);
@@ -114,9 +121,8 @@ public sealed class Driver : MonoBehaviour
                 Record("AUDIT_DONE " + stage);
                 return;
             }
-            context ??= (CustomCmdContext)Activator.CreateInstance(typeof(CustomCmdContext), BindingFlags.Instance | BindingFlags.NonPublic, null, new object?[] { null }, null)!;
-            context.ExecuteCommand(request);
-            Record("DISPATCHED " + request);
+            if (RuntimeChecks.TryHandle(this, request)) return;
+            RunConsole(request);
         }
         catch (Exception ex) { Record("FAIL " + ex); }
     }

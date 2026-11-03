@@ -1146,7 +1146,7 @@
         }
       },
       "ThirdLayerEnabled": false,
-      "ThirdLayout": 114,
+      "ThirdLayout": 0,
       "BuildThirdFrom": {
         "LayerType": 0,
         "Zone": 0

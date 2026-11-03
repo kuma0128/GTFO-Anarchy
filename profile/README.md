@@ -17,6 +17,15 @@ Special thanks to my team (Scotch, Jonino, Cross) and friends.
 
 ## VERSION
 
+```1.1.7```
+
+- Updated for CheeseGeos 0.6.2 and GTFO-API 0.6.1 (BepInExPack_GTFO 3.2.4). CheeseGeos changed its asset paths in 0.6.0, so D3 needs this update.
+- Updated AdvancedWardenObjective 2.6.4, EnemyAnimationFix 1.5.0, MemoryLeakFix 1.3.10, SnatcherBugFix 0.6.0, FlowGeos 0.9.5, OptionalNetworkAPI 1.3.3 and ExtraObjectiveSetup 1.6.15.
+- Removed DoorEnemyFix, which has been deprecated on Thunderstore, and WardenIntelOhBehave, whose fix is now part of MemoryLeakFix.
+- Fixed sub-objective messages that were not shown in C2, D1 and D3, the zone named by C2's OVERRIDE_LOCKDOWN command, C1's exit wave settings, and data entries that pointed at missing blocks.
+- Please recreate your r2modman profile after updating.
+- C1, C2, D1, D2 and D3 were built in game with this dependency combination, and all 19 fixed scan positions passed. All five were played through to extraction (with invulnerability), including the C1 reactor startup. Warden events, all 19 security sensors, snatcher capture/release, warden intel on repeated drops and the return to the lobby after a team wipe were also checked. Multiplayer was not tested.
+
 ```1.1.6```
 
 - Fixed D3's exit fog reference and restored its scan position overrides.

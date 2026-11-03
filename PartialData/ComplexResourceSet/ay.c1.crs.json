@@ -34,6 +34,31 @@
             "Prefab": "Assets/AssetPrefabs/Complex/Mining/Geomorphs/Refinery/geo_64x64_mining_refinery_HA_07.prefab",
             "SubComplex": 5,
             "Shard": 14
+        },
+        {
+            "Prefab": "Assets/AssetPrefabs/Complex/Mining/Geomorphs/Refinery/geo_64x64_mining_refinery_HA_03.prefab",
+            "SubComplex": 1,
+            "Shard": 10
+        },
+        {
+            "Prefab": "Assets/AssetPrefabs/Complex/Mining/Geomorphs/Refinery/geo_64x64_mining_refinery_HA_04.prefab",
+            "SubComplex": 1,
+            "Shard": 11
+        },
+        {
+            "Prefab": "Assets/AssetPrefabs/Complex/Mining/Geomorphs/Refinery/geo_64x64_mining_refinery_HA_05.prefab",
+            "SubComplex": 1,
+            "Shard": 12
+        },
+        {
+            "Prefab": "Assets/AssetPrefabs/Complex/Mining/Geomorphs/Refinery/geo_64x64_mining_refinery_HA_06.prefab",
+            "SubComplex": 1,
+            "Shard": 13
+        },
+        {
+            "Prefab": "Assets/AssetPrefabs/Complex/Mining/Geomorphs/Refinery/geo_64x64_mining_refinery_HA_07.prefab",
+            "SubComplex": 1,
+            "Shard": 14
         }
     ],
     "GeomorphTiles_2x1": [],
@@ -286,12 +311,42 @@
             "Prefab": "Assets/AssetPrefabs/Complex/Mining/Plugs/env_plug_8mheight_flat_mining_08.prefab",
             "SubComplex": 5,
             "Shard": 16
+        },
+        {
+            "Prefab": "Assets/AssetPrefabs/Complex/Mining/Plugs/env_plug_8mheight_flat_mining_06.prefab",
+            "SubComplex": 1,
+            "Shard": 16
+        },
+        {
+            "Prefab": "Assets/AssetPrefabs/Complex/Mining/Plugs/env_plug_8mheight_flat_mining_07.prefab",
+            "SubComplex": 1,
+            "Shard": 16
+        },
+        {
+            "Prefab": "Assets/AssetPrefabs/Complex/Mining/Plugs/env_plug_8mheight_flat_mining_03.prefab",
+            "SubComplex": 1,
+            "Shard": 16
+        },
+        {
+            "Prefab": "Assets/AssetPrefabs/Complex/Generic/Plugs/env_plug_8mheight_flat_04.prefab",
+            "SubComplex": 1,
+            "Shard": 16
+        },
+        {
+            "Prefab": "Assets/AssetPrefabs/Complex/Mining/Plugs/env_plug_8mheight_flat_mining_08.prefab",
+            "SubComplex": 1,
+            "Shard": 16
         }
     ],
     "StraightPlugsWithGates": [
         {
             "Prefab": "Assets/AssetPrefabs/Complex/Mining/Plugs/env_plug_8mheight_flat_mining_with_gate_02.prefab",
             "SubComplex": 5,
+            "Shard": 16
+        },
+        {
+            "Prefab": "Assets/AssetPrefabs/Complex/Mining/Plugs/env_plug_8mheight_flat_mining_with_gate_02.prefab",
+            "SubComplex": 1,
             "Shard": 16
         }
     ],
@@ -304,6 +359,16 @@
         {
             "Prefab": "Assets/AssetPrefabs/Complex/Generic/Plugs/env_plug_8mheight_elev6m_02.prefab",
             "SubComplex": 5,
+            "Shard": 16
+        },
+        {
+            "Prefab": "Assets/AssetPrefabs/Complex/Generic/Plugs/env_plug_8mheight_elev6m_01.prefab",
+            "SubComplex": 1,
+            "Shard": 16
+        },
+        {
+            "Prefab": "Assets/AssetPrefabs/Complex/Generic/Plugs/env_plug_8mheight_elev6m_02.prefab",
+            "SubComplex": 1,
             "Shard": 16
         }
     ],
@@ -327,6 +392,26 @@
             "Prefab": "Assets/AssetPrefabs/Complex/Mining/Plugs/env_plug_8mheight_elev6m_mining_with_gate_05.prefab",
             "SubComplex": 5,
             "Shard": 16
+        },
+        {
+            "Prefab": "Assets/AssetPrefabs/Complex/Generic/Plugs/env_plug_8mheight_elev6m_03_with_gate.prefab",
+            "SubComplex": 1,
+            "Shard": 16
+        },
+        {
+            "Prefab": "Assets/AssetPrefabs/Complex/Mining/Plugs/env_plug_8mheight_elev6m_mining_with_gate_04.prefab",
+            "SubComplex": 1,
+            "Shard": 16
+        },
+        {
+            "Prefab": "Assets/AssetPrefabs/Complex/Generic/Plugs/env_plug_8mheight_elev6m_02_with_gate.prefab",
+            "SubComplex": 1,
+            "Shard": 16
+        },
+        {
+            "Prefab": "Assets/AssetPrefabs/Complex/Mining/Plugs/env_plug_8mheight_elev6m_mining_with_gate_05.prefab",
+            "SubComplex": 1,
+            "Shard": 16
         }
     ],
     "DoubleDropPlugsNoGates": [
@@ -334,12 +419,22 @@
             "Prefab": "Assets/AssetPrefabs/Complex/Mining/Plugs/env_plug_8mheight_elev12m_mining_01.prefab",
             "SubComplex": 5,
             "Shard": 16
+        },
+        {
+            "Prefab": "Assets/AssetPrefabs/Complex/Mining/Plugs/env_plug_8mheight_elev12m_mining_01.prefab",
+            "SubComplex": 1,
+            "Shard": 16
         }
     ],
     "DoubleDropPlugsWithGates": [
         {
             "Prefab": "Assets/AssetPrefabs/Complex/Mining/Plugs/env_plug_8mheight_elev12m_mining_with_gate_01.prefab",
             "SubComplex": 5,
+            "Shard": 16
+        },
+        {
+            "Prefab": "Assets/AssetPrefabs/Complex/Mining/Plugs/env_plug_8mheight_elev12m_mining_with_gate_01.prefab",
+            "SubComplex": 1,
             "Shard": 16
         }
     ],
