@@ -1,9 +1,9 @@
 const fs=require('node:fs'),path=require('node:path'),{spawn}=require('node:child_process');
 const {sendCommand}=require('./command.cjs');
-const usage='node checks.cjs <test-root> <events [C1,C2,D1,D2,D3] | snatcher [D2|D3] | intel [drops]> [--label name]';
+const usage='node checks.cjs <test-root> <events [C1,C2,D1,D2,D3] | clear [C1,C2,D1,D2,D3] | snatcher [D2|D3] | intel [drops] | fail [stage] | layout [C1,C2,D1,D2,D3]> [--label name]';
 if(process.argv.includes('--help')){console.log(usage);process.exit(0);}
 const [,,rootArg,scenario,option]=process.argv;
-if(!rootArg||!['events','snatcher','intel'].includes(scenario)){console.error(usage);process.exit(1);}
+if(!rootArg||!['events','clear','snatcher','intel','fail','layout'].includes(scenario)){console.error(usage);process.exit(1);}
 const base=path.resolve(rootArg),logs=path.join(base,'logs'),runtime=path.join(base,'runtime');
 const bridge=path.join(logs,'bridge.log'),bep=path.join(runtime,'BepInEx/LogOutput.log');
 const labelAt=process.argv.indexOf('--label'),label=labelAt>0?process.argv[labelAt+1]:scenario;
@@ -76,8 +76,11 @@ async function events(selection){
     await waitLine(new RegExp(`EVENTS_DONE ${stage}`),at,30*60000);
     if(stage==='D1'){
       at=read(bridge).length;await command('d1-flow');await waitLine(/D1_FLOW .*"step":"reboot command 25s"/,at,120000);
-      at=read(bridge).length;await command('sensor D1 0');await waitLine(/SENSOR_DONE D1 0/,at,120000);
     }
+    // Walk into every ExtraObjectiveSetup security sensor of the stage.
+    const sensorFile=path.join(runtime,'BepInEx/plugins/Anarchy/Custom/ExtraObjectiveSetup/SecuritySensor',`AY-${stage}.json`);
+    const sensors=fs.existsSync(sensorFile)?JSON.parse(fs.readFileSync(sensorFile,'utf8')).Definitions[0].SensorGroup.length:0;
+    for(let i=0;i<sensors;i++){at=read(bridge).length;await command(`sensor ${stage} ${i}`);await waitLine(new RegExp(`SENSOR_DONE ${stage} ${i}`),at,120000);}
     // Terminal commands whose events start the command's own scan.
     for(const [dim,layer,zone,name] of {C2:[[0,0,6,'OVERRIDE_LOCKDOWN']],D2:[[1,0,0,'COPY_GENOME_DB']]}[stage]||[]){
       at=read(bridge).length;await command(`terminal ${dim} ${layer} ${zone} ${name} 45`);await waitLine(new RegExp(`TERMINAL_DONE ${name}`),at,180000);
@@ -153,6 +156,70 @@ async function intel(drops){
   return result;
 }
 
+async function clear(selection){
+  const results=[];
+  for(const stage of selection){
+    console.log('BEGIN '+stage);
+    const bridgeStart=read(bridge).length;
+    await launch(`${label}-${stage}`);
+    await drop(stage);await pause(8000);
+    const logStart=read(bep).length;
+    const at=read(bridge).length;await command('clear '+stage);
+    const line=await waitLine(/CLEAR_RESULT (.*)$/m,at,90*60000).catch(e=>null);
+    await pause(15000);
+    const bridgeText=read(bridge).slice(bridgeStart),log=read(bep).slice(logStart);
+    fs.writeFileSync(path.join(logs,`${label}-${stage}-bridge.log`),bridgeText);
+    fs.writeFileSync(path.join(logs,`${label}-${stage}-checks.log`),log);
+    const delays=records(bridgeText,'EVENT_DELAY').map(JSON.parse);
+    const row={stage,result:line?JSON.parse(line[1]):null,
+      items:records(bridgeText,'OBJECTIVE_ITEM').map(JSON.parse),
+      doors:records(bridgeText,'DOOR').map(JSON.parse),
+      closed:records(bridgeText,'DOORS_CLOSED').map(JSON.parse).at(-1),
+      commands:records(bridgeText,'COMMAND').filter(s=>s.startsWith('{')).map(JSON.parse),
+      objectives:records(bridgeText,'OBJECTIVE_(?:BEGIN|STEP|DONE)').map(JSON.parse),
+      reactor:records(bridgeText,'REACTOR(?:_VERIFY)?'),
+      exit:records(bridgeText,'EXIT_SCAN').map(JSON.parse),
+      delays:{count:delays.length,maxError:delays.reduce((m,d)=>Math.max(m,Math.abs(d.actual-d.delay)),0),longest:delays.reduce((m,d)=>Math.max(m,d.delay),0)},
+      states:[...bridgeText.matchAll(/STATE (\w+)/g)].map(m=>m[1]),
+      errors:errorLines(log.split(/\r?\n/))};
+    results.push(row);
+    console.log(`RESULT ${stage} success=${row.result?.success} doors=${row.doors.length} commands=${row.commands.length} delays=${row.delays.count} maxDelayError=${row.delays.maxError.toFixed(2)} errors=${row.errors.length}`);
+    await quit();
+  }
+  return results;
+}
+
+// A team wipe without checkpoints fails the expedition and returns to the lobby.
+async function fail(stage){
+  await launch(`${label}-${stage}`);
+  await drop(stage);await pause(8000);
+  const at=read(bridge).length;
+  await command('God false');await command('Suicide');
+  const failed=await waitState(['ExpeditionFail'],at,120000).catch(e=>String(e));
+  const back=await waitState(['Lobby','NoLobby'],at,180000).catch(e=>String(e));
+  const states=[...read(bridge).slice(at).matchAll(/STATE (\w+)/g)].map(m=>m[1]);
+  console.log(`FAIL ${stage} failState=${failed} after=${back} states=${states.join('>')}`);
+  await quit();
+  return {stage,failState:failed,after:back,states};
+}
+
+// Build a stage and write its tiles and plugs (and the loaded datablocks) for comparing data changes.
+async function layout(selection){
+  const out=[];
+  for(const stage of selection){
+    await launch(`${label}-${stage}`);
+    await drop(stage);await pause(5000);
+    let at=read(bridge).length;await command('dump-blocks');await waitLine(/DUMP_BLOCKS \d+/,at,60000);
+    at=read(bridge).length;await command(`dump-level ${label}-${stage}`);await waitLine(/DUMP_LEVEL /,at,60000);
+    const errors=errorLines(read(bep).split(/\r?\n/));
+    fs.writeFileSync(path.join(logs,`${label}-${stage}-checks.log`),read(bep));
+    out.push({stage,level:`${label}-${stage}-level.txt`,errors:errors.length});
+    console.log(`LAYOUT ${stage} errors=${errors.length}`);
+    await quit();
+  }
+  return out;
+}
+
 async function main(){
   if(!fs.existsSync(path.join(runtime,'BepInEx/plugins/AnarchyValidation.dll')))throw Error('Build and install the validation plugin first');
   fs.mkdirSync(logs,{recursive:true});
@@ -162,6 +229,9 @@ async function main(){
     if(scenario==='events')result=await events((option&&!option.startsWith('--')?option:'C1,C2,D1,D2,D3').split(','));
     if(scenario==='snatcher')result=await snatcher(option&&!option.startsWith('--')?option:'D3');
     if(scenario==='intel')result=await intel(Number(option&&!option.startsWith('--')?option:3));
+    if(scenario==='clear')result=await clear((option&&!option.startsWith('--')?option:'C1,C2,D1,D2,D3').split(','));
+    if(scenario==='fail')result=await fail(option&&!option.startsWith('--')?option:'C1');
+    if(scenario==='layout')result=await layout((option&&!option.startsWith('--')?option:'C1,C2,D1,D2,D3').split(','));
   }finally{await quit();}
   fs.writeFileSync(path.join(logs,`${label}-result.json`),JSON.stringify(result,null,2));
   console.log('WROTE '+path.join(logs,`${label}-result.json`));

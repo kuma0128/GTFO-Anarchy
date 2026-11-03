@@ -14,7 +14,7 @@ using UnityEngine.AI;
 namespace AnarchyValidation;
 
 // Checks that need game time: warden event effects, snatcher capture/release and warden intel display.
-internal static class RuntimeChecks
+internal static partial class RuntimeChecks
 {
     internal static int IntelCalls, CustomSubCalls, WaveTriggers;
     internal static string LastCustomSub = "";
@@ -30,6 +30,7 @@ internal static class RuntimeChecks
             "events" when words.Length == 2 => RunEvents(driver, words[1]),
             "d1-flow" => D1Flow(driver),
             "terminal" when words.Length == 6 => TerminalCommand(driver, words),
+            "clear" when words.Length == 2 => Clear(driver, words[1]),
             "sensor" when words.Length == 3 => Sensor(driver, words[1], int.Parse(words[2])),
             "snatcher" when words.Length == 2 && words[1] is "kill" or "timeout" => Snatcher(driver, words[1]),
             "intel-burst" when words.Length == 2 => IntelBurst(int.Parse(words[1])),
@@ -43,6 +44,41 @@ internal static class RuntimeChecks
         if (words[0] == "intel-watch")
         {
             intelWatch ??= driver.StartCoroutine(IntelWatch().WrapToIl2Cpp());
+            return true;
+        }
+        // Every loaded datablock's IDs and names, for checking references against what the game actually has.
+        if (words[0] == "dump-blocks")
+        {
+            var dump = new SortedDictionary<string, List<object>>();
+            foreach (var type in typeof(GameDataBlockBase<>).Assembly.GetTypes())
+            {
+                var baseType = type.BaseType;
+                if (baseType == null || !baseType.IsGenericType || baseType.GetGenericTypeDefinition() != typeof(GameDataBlockBase<>)) continue;
+                IEnumerable? blocks;
+                try { blocks = baseType.GetMethod("GetAllBlocks", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, null) as IEnumerable; }
+                catch (Exception ex) { Driver.Record($"DUMP_BLOCKS_SKIP {type.Name} {ex.InnerException?.Message ?? ex.Message}"); continue; }
+                if (blocks == null) continue;
+                var rows = new List<object>();
+                foreach (var block in blocks)
+                {
+                    // Layouts also list their zones, so zone references into vanilla dimension layouts can be checked.
+                    var zones = (block as LevelLayoutDataBlock)?.Zones?.ToArray().Select(z => (int)z.LocalIndex).ToArray();
+                    rows.Add(new { id = type.GetProperty("persistentID")?.GetValue(block), name = type.GetProperty("name")?.GetValue(block), zones });
+                }
+                dump[type.Name] = rows;
+            }
+            File.WriteAllText(Path.Combine(Driver.LogRoot, "blocks.json"), JsonSerializer.Serialize(dump));
+            Driver.Record("DUMP_BLOCKS " + dump.Count + " types, " + dump.Values.Sum(v => v.Count) + " blocks");
+            return true;
+        }
+        // The generated tiles and plugs, to show a data change leaves the level layout unchanged.
+        if (words[0] == "dump-level" && words.Length == 2)
+        {
+            var tiles = Builder.CurrentFloor.allZones.ToArray().SelectMany(z => z.m_areas.ToArray().Select(a =>
+                $"{z.DimensionIndex}/{z.Layer.m_type}/{z.LocalIndex} {a.m_geomorph?.gameObject.name} {Vector3Int.RoundToInt(a.transform.position)}"));
+            var plugs = UnityEngine.Object.FindObjectsOfType<LG_Plug>().Select(p => $"{p.gameObject.name} {Vector3Int.RoundToInt(p.transform.position)}").OrderBy(x => x);
+            File.WriteAllLines(Path.Combine(Driver.LogRoot, words[1] + "-level.txt"), tiles.OrderBy(x => x).Concat(plugs));
+            Driver.Record("DUMP_LEVEL " + words[1]);
             return true;
         }
         if (words[0] == "shot" && words.Length == 2)
@@ -200,7 +236,8 @@ internal static class RuntimeChecks
             10 => (!after.Waves.Intersect(before.Waves).Any(), $"waves running before {before.Waves.Length}, still running {after.Waves.Intersect(before.Waves).Count()}, new {after.Waves.Except(before.Waves).Count()}"),
             // The objective state syncs custom sub-objectives by TextDataBlock ID, so text written inline (ID 0) never reaches the HUD.
             11 when e.CustomSubObjective != null && e.CustomSubObjective.Id == 0 && subObjective.Length > 0 => (false, $"inline text with TextDataBlock ID 0 cannot be synced; HUD {JsonSerializer.Serialize(after.Hud)}"),
-            11 => (after.CustomSub > before.CustomSub || Plain(LastCustomSub) == subObjective || subObjective.Length > 0 && after.Hud.Contains(subObjective),
+            // The HUD must show the event's own text; an update with empty text does not count.
+            11 => (subObjective.Length == 0 ? after.CustomSub > before.CustomSub : Plain(LastCustomSub) == subObjective || after.Hud.Contains(subObjective),
                 $"custom sub-objective updates {before.CustomSub} -> {after.CustomSub}, HUD {JsonSerializer.Serialize(after.Hud)}"),
             // Completing one objective of a chain moves the layer on to the next objective.
             12 => (after.Objective == eWardenObjectiveStatus.WardenObjectiveItemSolved || after.Chain > before.Chain, $"{e.Layer} {before.Objective} #{before.Chain} -> {after.Objective} #{after.Chain}"),
