@@ -24,7 +24,6 @@ Special thanks to my team (Scotch, Jonino, Cross) and friends.
 - Removed DoorEnemyFix, which has been deprecated on Thunderstore, and WardenIntelOhBehave, whose fix is now part of MemoryLeakFix.
 - Fixed sub-objective messages that were not shown in C2, D1 and D3, the zone named by C2's OVERRIDE_LOCKDOWN command, C1's exit wave settings, and data entries that pointed at missing blocks.
 - Please recreate your r2modman profile after updating.
-- C1, C2, D1, D2 and D3 were built in game with this dependency combination, and all 19 fixed scan positions passed. All five were played through to extraction (with invulnerability), including the C1 reactor startup. Warden events, all 19 security sensors, snatcher capture/release, warden intel on repeated drops and the return to the lobby after a team wipe were also checked. Multiplayer was not tested.
 
 ```1.1.6```
 
