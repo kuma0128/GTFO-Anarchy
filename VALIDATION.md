@@ -2,32 +2,63 @@
 
 ## 1.1.7 dependency update
 
-Validated on 1 November 2026 (JST), with GTFO revision **34873**, using the same CLI tooling as 1.1.6 (CConsole 0.14.0 and the temporary validation plugin). The runtime contained the 41 packages in the [runtime dependency list](tools/runtime-dependencies.json), including BepInExPack_GTFO 3.2.4, GTFO-API 0.6.0, CheeseGeos 0.6.0, AdvancedWardenObjective 2.6.3, AmorLib 1.3.0, EnemyAnimationFix 1.5.0, OptionalNetworkAPI 1.3.2, MemoryLeakFix 1.3.10 and SnatcherBugFix 0.6.0. DoorEnemyFix was not installed.
+The 1.1.7 release uses the 40 runtime packages in the [runtime dependency list](tools/runtime-dependencies.json) (35 direct requirements in the manifest). It was first validated on 1 November 2026 (JST) with GTFO revision **34873**. On 3 November the list was updated to the newest version of every package and validated again:
 
-| Stage | Result | Scan instances checked | Error/Exception lines | Warning lines |
-| --- | --- | ---: | ---: | ---: |
-| C1 | InLevel; audit passed | 0 | 23 | 39 |
-| C2 | InLevel; audit passed | 4 | 259 | 101 |
-| D1 | InLevel; audit passed | 1 | 69 | 357 |
-| D2 | InLevel; audit passed | 9 | 3419 | 80 |
-| D3 | InLevel; audit passed | 5 | 126 | 48 |
+| Package | 1 November | Release |
+| --- | --- | --- |
+| GTFO-API | 0.6.0 | **0.6.1** (required by AdvancedWardenObjective 2.6.4) |
+| CheeseGeos | 0.6.0 | **0.6.2** |
+| AdvancedWardenObjective | 2.6.3 | **2.6.4** |
+| OptionalNetworkAPI | 1.3.2 | **1.3.3** |
+| FlowGeos | 0.9.4 | **0.9.5** |
+| WardenIntelOhBehave | 0.0.1 | **removed** (MemoryLeakFix 1.3.10 does the same reset; see [Warden intel](#warden-intel-across-consecutive-expeditions)) |
 
-**19/19** configured scan instances were registered at their configured positions, and all sampled navigation-mesh points were within **0.0975 m**. Fog block 225 passed in all five runs.
+The other packages were already current: BepInExPack_GTFO 3.2.4, AmorLib 1.3.0, EnemyAnimationFix 1.5.0, MemoryLeakFix 1.3.10, SnatcherBugFix 0.6.0, ExtraObjectiveSetup 1.6.15 and the rest of the list. OptionalNetworkAPI and ExtraObjectiveSetup are now listed in the manifest directly, because the packages that pull them in require older versions (EnemyAnimationFix 1.5.0 requires OptionalNetworkAPI 1.3.2, and EOSExt_SecuritySensor 1.1.7 requires ExtraObjectiveSetup 1.4.3). DoorEnemyFix was not installed.
 
-- **Compared with 1.1.6:** after normalizing paths and numbers, the build-phase Error/Exception lines of C2, D1, D2 and D3 are identical to the 1.1.6 run. C1 differs only in its entrance wave (two more spawn-node fallbacks, one ladder message, two fewer door-wave messages), which depends on the unattended player at the elevator as described below.
-- **New startup messages:** `Assembly OptionalNetworkAPI.dll is not registered in il2cpp` from Il2CppInterop when the new EnemyAnimationFix dependency loads (EnemyAnimationFix and all later plugins still loaded), and GTFO-API reporting that `mining_reactor_01_gencluster_v1.prefab` is already registered. CheeseGeos 0.6.0 ships byte-identical `markers-compressed` and `rlc_markers-compressed` bundles; the first registration is used.
-- **CheeseGeos paths:** a control run of D3 with deliberately missing paths logged `Asset ... did not loaded!` and `tile prefab is null`, and generation never finished (timeout). The passing run therefore loaded the new 0.6.0 paths. A second control run with the 1.1.6 paths also reached `InLevel`, because CheeseGeos 0.6.0 still ships its legacy `rlc_mining` bundle; that compatibility depends on the bundle remaining in future CheeseGeos versions.
-- **Not covered by the build runs:** the same limits as 1.1.6 apply. Warden events, snatcher capture/release and warden intel across consecutive expeditions were checked afterwards (next section); full mission clears and multiplayer synchronization were not tested.
+### Build and scan audit
+
+Each cell gives Error/Exception lines / Warning lines. Every run reached `InLevel` and passed the audit.
+
+| Stage | Scan instances checked | 1 November | Release set (3 Nov, 18:46–18:51 JST) | Release set and all data fixes (3 Nov, 20:01–20:03 JST) |
+| --- | ---: | ---: | ---: | ---: |
+| C1 | 0 | 23 / 39 | 15 / 39 | 19 / 39 |
+| C2 | 4 | 259 / 101 | 259 / 101 | 258 / 101 |
+| D1 | 1 | 69 / 357 | 69 / 357 | not run yet |
+| D2 | 9 | 3419 / 80 | 3419 / 80 | not run yet |
+| D3 | 5 | 126 / 48 | 126 / 48 | not run yet |
+
+The release-set runs already had the sub-objective text and C1 wave-ID fixes of the [data fixes](#117-data-fixes). The last column has every fix except the C2 command text, which changes only text. **19/19** configured scan instances were registered at their configured positions in every run, and all sampled navigation-mesh points were within **0.0975 m**. Fog block 225 passed in all runs. D1, D2 and D3 have not yet been rebuilt with all the data fixes; see [Not covered yet](#not-covered-yet).
+
+- **Error lines with the release set:** C2, D1, D2 and D3 have the same counts as on 1 November. C1 varies with its entrance wave and resource allocation (see [Remaining log messages](#remaining-log-messages)).
+- **Error lines after the data fixes:** C1 no longer logs the eight `ComplexResourceSetDataBlock ... no geomorph/prefab found with subcomplex Refinery ... defaulting to ALL` messages. Its resource-container fallbacks (`TryGetZoneFunctionDistribution returning FALSE`, `Had to create a new resourceContainer`) differ between sessions: 0, 1, 4 and 5 pairs in four builds before the fix, and 4 and 6 pairs after it, so the total rose from 15 to 19 by chance. C2 logs one resource fallback fewer and one new message, `UseStaticBioscanPointsInZone was enabled but it failed to get custom bioscan spawn points ... Defaulting to random bioscans points`, from the `OVERRIDE_LOCKDOWN` scan fix described below.
+- **Startup messages:** `Assembly OptionalNetworkAPI.dll is not registered in il2cpp` from Il2CppInterop remains with OptionalNetworkAPI 1.3.3 (EnemyAnimationFix and all later plugins still load). With CheeseGeos 0.6.2 and GTFO-API 0.6.1, GTFO-API no longer reports `mining_reactor_01_gencluster_v1.prefab` as already registered.
+- **CheeseGeos paths (0.6.0):** a control run of D3 with deliberately missing paths logged `Asset ... did not loaded!` and `tile prefab is null`, and generation never finished (timeout). The passing run therefore loaded the new paths. A second control run with the 1.1.6 paths also reached `InLevel`, because CheeseGeos 0.6.0 still ships its legacy `rlc_mining` bundle; that compatibility depends on the bundle remaining in future CheeseGeos versions. D3 builds and clears with 0.6.2.
+
+## 1.1.7 data fixes
+
+A reference audit (`node tools/game-validation/audit-refs.cjs <blocks.json>`) checks every datablock and zone reference in Anarchy's data against Anarchy's own blocks and a dump of the blocks loaded in the game (bridge command `dump-blocks`). It found the problems below, all of which were fixed. Only eight entries in the fully commented ExtraObjectiveSetup `Template.json` files remain; those files are not used by any expedition.
+
+- **Sub-objectives that never appeared:** five `UpdateCustomSubObjective` events had their text written inline (C2 `EventsOnElevatorLand[0]` and `EventsOnActivate[16]`, D1 `EventsOnActivate[7]` and `[18]`, D3 chain objective `EventsOnActivate[0]`). The game syncs custom sub-objectives by TextDataBlock ID, and inline text has ID 0, so nothing was shown. The same English text is now in TextDataBlocks **1580–1584** and the events reference them. The clear runs showed them on the HUD, for example "Proceed to ZONE 12 and Escape." in D3.
+- **C1 exit wave:** chain objective `EventsOnGotoWin[2]` used wave settings 111111. The game keeps only 16 bits (45575) and logged `SurvivalWave got no SurvivalWaveSettings with ID 45575`, so the exit wave had no settings. The settings block "Trickle 4-30 SSpB 2" now uses ID **142**, and the event references it.
+- **C1 StopEnemyWaves:** objective `EventsOnGotoWin[0]` targeted dimension 1, which C1 does not have. It now uses reality (0).
+- **C1 resource set:** the C1 complex resource set had no Refinery entries for 1x1 geomorphs and plugs, so the game fell back to `ALL` eight times per build. The 19 Refinery entries are copies of the existing entries. A same-seed build produced the same zone tiles and plugs as before, and only the reactor terminal's serial number changed.
+- **C2 `OVERRIDE_LOCKDOWN`:** the scan started by the command (`ActivateChainedPuzzle`) had `UseStaticBioscanPoints` off and no `WorldEventObjectFilter`, so it looked for a world object that does not exist. It now uses the zone's bioscan points, like D2's `COPY_GENOME_DB`. ZONE 105 has no static points, so the game places the scan at random points in the zone and logs the message above. In the clear run, the command started its scan and the run continued to extraction.
+- **C2 `OVERRIDE_LOCKDOWN` text:** the command description and its intel named ZONE 107, but the command opens ZONE 106 (zone 7), where the uplink terminal is. ZONE 107 is unlocked later, when the uplink finishes. Both now name ZONE 106. The intel still appears 120 s after the command, as before.
+- **Unused blocks with missing references:** chained puzzles 256, 275, 276 and 277 (waves 299, 66, 61 and 60 do not exist) and dimensions 2, 9, 10, 11 and 12 (layouts 157, 182, 193, 195 and 1398700845 do not exist) were removed. No expedition used them. The dimensions in use (14, 16, 17 and 20) are unchanged.
+- **Enemy population:** `DefaultPop1` had a role entry for enemy 70, which does not exist. The entry was removed.
+- **Unreleased E1:** its third layout pointed at layout 114, which does not exist. It now has no third layout (0).
+
+`npm test --prefix tools` passes with these changes.
 
 ## 1.1.7 events, snatchers and warden intel
 
-Checked on 3 November 2026 (JST) with the same runtime, GTFO revision **34873**, using `tools/game-validation/checks.cjs` and the checks added to the validation plugin (`RuntimeChecks.cs`). God mode was on and the game ran at normal speed (`TimeScale 1`).
+Checked on 3 November 2026 (JST) with the 1 November dependency set (AdvancedWardenObjective 2.6.3), GTFO revision **34873**, using `tools/game-validation/checks.cjs` and the checks added to the validation plugin (`RuntimeChecks.cs`). God mode was on and the game ran at normal speed (`TimeScale 1`). These runs predate the data fixes, and they have not yet been repeated with the release set (see [Not covered yet](#not-covered-yet)).
 
 ### Warden events (AdvancedWardenObjective 2.6.3)
 
 AWO hooks the game's event coroutine. It takes over only its own event types (10000 and above) and four vanilla types when they use fields the game ignores. In C1–D3, Anarchy has one AWO event, `CloseSecurityDoor` in D1 ZONE 7 `EventsOnOpenDoor` (it closes the ZONE 4 door behind the team), and no fields that trigger AWO's vanilla overrides. Every other event passes through the hook to the game's own executor.
 
-Every warden event of the built levels (zone and terminal command events, objective events including chained objectives and reactor waves) was run one at a time through `WardenObjectiveManager.CheckAndExecuteEventsOnTrigger`, and its effect was checked. Delays were cleared for the call, so delayed timing itself was not tested.
+Every warden event of the built levels (zone and terminal command events, objective events including chained objectives and reactor waves) was run one at a time through `WardenObjectiveManager.CheckAndExecuteEventsOnTrigger`, and its effect was checked. Delays were cleared for the call; delay timing was measured separately in the [mission clears](#117-mission-clears).
 
 | Stage | Events | EventBreak (not run) | Effect confirmed | Logged by AWO's hook |
 | --- | ---: | ---: | ---: | ---: |
@@ -41,10 +72,9 @@ Every warden event of the built levels (zone and terminal command events, object
 - **Types covered:** SpawnEnemyWave 35, OpenSecurityDoor 14, UnlockSecurityDoor 13, StopEnemyWaves 11, UpdateCustomSubObjective 9, AllLightsOff 7, SetFogSetting 5, DimensionWarpTeam 4, AllLightsOn 3, DimensionFlashTeam 3, ForceCompleteObjective 2, ActivateChainedPuzzle 2, CloseSecurityDoor (AWO) 1, and 30 events that only show warden intel. Every event with warden intel sent it to the HUD.
 - **D1 played through its own triggers:** opening the ZONE 7 door showed "Reboot the alarm system…" and AWO closed the ZONE 4 door (Closed, not traversable). Typing `REBOOT_SECURITY_OVERRIDE` at the ZONE 7 terminal reopened it, and "Alarms are successfully deactivated." followed 5 s later. Walking into the first ExtraObjectiveSetup security sensor turned the lights off and started its wave; the lights came back on about 20 s later.
 - **Terminal command scans:** both ActivateChainedPuzzle events belong to terminal commands (C2 `OVERRIDE_LOCKDOWN`, D2 dimension 1 `COPY_GENOME_DB`). Typing each command at its terminal started its scan and a wave within 5 s.
-- **Not shown on the HUD (existing data, not AWO):** the three UpdateCustomSubObjective events whose text is written inline (C2 `EventsOnElevatorLand[0]` and `EventsOnActivate[16]`, D3 chain objective `EventsOnActivate[0]`). The objective state syncs custom sub-objectives as TextDataBlock IDs (`pWardenObjectiveInteraction.newCustomSubObjectiveTextID`), and inline text has ID 0. D1's sub-objectives, which reference TextDataBlocks, are shown. AWO does not handle this event type.
-- **Data note (existing):** C1 chain objective `EventsOnGotoWin[2]` starts a wave with settings 111111 ("Trickle 4-30 SSpB 2"). The game reads the ID as 45575 and logs `SurvivalWave got no SurvivalWaveSettings with ID 45575`, so this exit wave has no settings. IDs above 65535 do not survive.
-- **Logs:** the error lines during the run are the game's own messages (their text is in the game's metadata, not in any plugin): `OnDoorIsOpened: LinkedToZoneData`, `OpenSecurityDoorWithActiveEnemyWave`, spawn-node fallbacks, and, in C1, an out-of-range lookup of `Dimension_1` while a door's zone events ran. No exception came from AWO.
-- **AWO 2.6.4** (released 3 November 2026, requires GTFO-API 0.6.1) fixes delayed AWO-handled events that fire before `InLevel`, such as events on elevator land. Anarchy's elevator-land events are vanilla types that AWO passes through; with 2.6.3 they ran on landing in C2 and D1.
+- **The three failures** were the inline-text sub-objectives in C2 and D3, now fixed (see [data fixes](#117-data-fixes)). AWO does not handle this event type.
+- **Logs:** the error lines during the run are the game's own messages (their text is in the game's metadata, not in any plugin): `OnDoorIsOpened: LinkedToZoneData`, `OpenSecurityDoorWithActiveEnemyWave`, spawn-node fallbacks, and, in C1, an out-of-range lookup of `Dimension_1` right after a door's zone events ran (`LG_Floor: Tried to get dimension with an index (Dimension_1) that was out of bounds`). It appeared before the StopEnemyWaves event that targeted dimension 1 was run, so that event (fixed below) is not proven to be its cause. No exception came from AWO.
+- **AWO 2.6.4** (released 3 November 2026, requires GTFO-API 0.6.1) fixes delayed AWO-handled events that fire before `InLevel`, such as events on elevator land. Anarchy's elevator-land events are vanilla types that AWO passes through; with 2.6.3 and 2.6.4 they ran on landing in C2 and D1.
 
 ### Snatcher capture and release (SnatcherBugFix 0.6.0)
 
@@ -55,7 +85,7 @@ In D3, a snatcher (enemy 46) was spawned 7 m in front of the idle player, once f
 | Killed 4 s after capture | Moved to the arena dimension (Dimension_20) | 0.2 s after the kill | With the warp | 2.3 s after the kill | Stand, alive, 0.06 m from the navigation mesh |
 | Spat out | Same | 5.6 s after capture | 0.3 s later | 2.4 s after the warp | Stand, alive, 0.08 m from the navigation mesh |
 
-The pouncer data gives consume 0.23 s, held start 1 s, maximum hold 4 s and spit-out 1.4 s, which matches the spit-out time. While a player is held, Unity logs `ArgumentNullException: Value cannot be null. Parameter name: ps` (49–63 lines per run). The same happens with SnatcherBugFix 0.5.0, with no SnatcherBugFix, and with MemoryLeakFix 1.3.9 plus EnemyAnimationFix 1.4.8, so it does not come from the 1.1.7 updates. Its source was not identified (no stack trace). Capture and release behaved the same in all four setups.
+The pouncer data gives consume 0.23 s, held start 1 s, maximum hold 4 s and spit-out 1.4 s, which matches the spit-out time. While a player is held, Unity logs `ArgumentNullException: Value cannot be null. Parameter name: ps` (49–63 lines per run). The same happens with SnatcherBugFix 0.5.0, with no SnatcherBugFix, and with MemoryLeakFix 1.3.9 plus EnemyAnimationFix 1.4.8, so it does not come from the 1.1.7 updates. A stack trace taken later points to the game's own `CellSoundEmitter.OnParticleCollision`, called from `FPSCamera.LateUpdate`. Capture and release behaved the same in all four setups.
 
 ### Warden intel across consecutive expeditions
 
@@ -63,15 +93,44 @@ One GTFO process dropped into D1 three times. In each drop, three of D1's warden
 
 | Setup | Drop 1 | Drop 2 | Drop 3 | Queue after each abort |
 | --- | --- | --- | --- | --- |
-| As released (WardenIntelOhBehave, MemoryLeakFix 1.3.10) | Shown | Shown | Shown | 2 → 0 |
-| Without WardenIntelOhBehave (MemoryLeakFix 1.3.10) | Shown | Shown | Shown | 2 → 0 |
+| With WardenIntelOhBehave, MemoryLeakFix 1.3.10 | Shown | Shown | Shown | 2 → 0 |
+| Without WardenIntelOhBehave, MemoryLeakFix 1.3.10 (release) | Shown | Shown | Shown | 2 → 0 |
 | Control: without WardenIntelOhBehave, MemoryLeakFix 1.3.9 | Shown | **Nothing shown** | **Nothing shown** | 2 → 2, 9 → 2, 16 → 9 |
 
-"Shown" means the four landing messages (the game's objective intro and Anarchy's "Find the Data Cube in ZONE 147") and the first queued message reached the HUD. The control run reproduces the bug: the queue is left over and nothing appears on the next drops. MemoryLeakFix 1.3.10 alone clears the queue at level cleanup, as WardenIntelOhBehave does.
+"Shown" means the four landing messages (the game's objective intro and Anarchy's "Find the Data Cube in ZONE 147") and the first queued message reached the HUD. The control run reproduces the bug: the queue is left over and nothing appears on the next drops. MemoryLeakFix 1.3.10 alone clears the queue at level cleanup (`ResetSubObjectiveMesssagQueue`), as WardenIntelOhBehave does, so WardenIntelOhBehave was removed from 1.1.7. Anarchy uses no other feature of it.
 
-### Not covered
+## 1.1.7 mission clears
 
-Full mission clears, checkpoints, multiplayer synchronization, delayed event timing, the natural triggers of events outside D1 (they were run directly), and the security sensors of C2, D2 and D3.
+Checked on 3 November 2026 (JST) with the release dependency set, using `node tools/game-validation/checks.cjs <test-root> clear <stages>`. C2, D1 and D2 had every data fix except the C1 resource set, the C2 command text, and the removal of the unused dimensions, the enemy 70 entry and E1's third layout. D3 ran earlier, before the C2 scan fix, the C1 StopEnemyWaves fix and the removal of the unused chained puzzles were also made. God mode was on, and the game ran at normal speed. The `clear` check plays the level through its own triggers:
+
+- It opens each reachable security door the way the door asks for: approach, solve its scan, or unlock it (key, cell and generator locks are unlocked directly as a shortcut), then moves the player inside and kills reachable enemies.
+- It types every unique terminal command once at its terminal.
+- It runs the objectives layer by layer. Special terminal commands are typed. Other objective types run their `EventsOnActivate` steps through the game's executor, which stops at each EventBreak as the game does, and are then completed with CConsole.
+- Finally it solves the exit scan and waits for `ExpeditionSuccess`.
+
+Every delayed event was timed between the game's own `BeginDelay` and `EndDelay` log lines.
+
+| Stage | Result | Doors opened | Terminal commands | Objective layers | Delayed events timed | Largest timing error | Longest delay |
+| --- | --- | ---: | --- | --- | ---: | ---: | ---: |
+| C2 | ExpeditionSuccess | 9 | `OVERRIDE_LOCKDOWN` | Main (uplink, 2 steps) | 29 | 0.30 s | 120 s |
+| D1 | ExpeditionSuccess | 10 | `REBOOT_SECURITY_OVERRIDE`, `DESABLE_FIREWALL` | Main (3 Data Cubes, 3 steps) | 37 | 0.02 s | 168 s |
+| D2 | ExpeditionSuccess | 15 | `COPY_GENOME_DB`, `Maintenance_Unlock_Alpha` | Third (uplink), Main (HSU) | 33 | 0.23 s | 120 s |
+| D3 | ExpeditionSuccess | 16 | — | Secondary (generator cluster), Third (`Init_ventilation_sequence`), Main (`EMERGENCY_ESCAPE_PROTOCOL`, then its survival chain) | 25 | 0.01 s | 180 s |
+
+- Every command's intel reached the HUD except `Maintenance_Unlock_Alpha`, which has none. At the end of D1, the doors of zones 10–13 were still `Closed_LockedWithNoKey`, because the route to the exit does not need them. One D1 delayed event was still pending when the expedition ended.
+- The C1 clear stopped after its first door because of a validation-tool fault (fixed), before the reactor objective. C1 has not been cleared yet.
+
+### Not covered yet
+
+To be run with the release set and all data fixes:
+
+- Rebuilds and scan audits of D1, D2 and D3.
+- The event check of all five stages, which now also walks into every ExtraObjectiveSetup security sensor (C2 4, D1 3, D2 10, D3 2; only D1's first sensor has been checked so far). It will also show whether C1's `Dimension_1` lookup remains.
+- The C1 clear, including its reactor startup and verification codes, and the clears of C2–D3 again with the complete data.
+- Snatcher capture/release and warden intel on repeated drops with the release set.
+- The expedition-failure flow (team wipe, then return to the lobby). Anarchy has no checkpoints (no zone sets `IsCheckpointDoor`), so a wipe ends the expedition.
+
+Multiplayer synchronization and joining in progress are outside the scope of these checks.
 
 ## 1.1.6 validation
 

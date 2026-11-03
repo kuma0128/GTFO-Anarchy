@@ -2,11 +2,15 @@
 
 ```1.1.7```
 
-- Update CheeseGeos to 0.6.0. Its prefabs moved into per-tile folders for GTFO-API 0.6.0's AssetAPI V2; update the D3 complex resource set and zone geomorphs (Refinery_X_RLC_01, Storage_I_RLC_01) and the unreleased E1 resource set to the new paths.
-- Update AdvancedWardenObjective 2.5.7 -> 2.6.3 (GTFO-API 0.6.0 / AmorLib 1.3.0 compatibility). This pulls in BepInExPack_GTFO 3.2.4, which now installs GTFO-API 0.6.0 as a separate package.
-- Update EnemyAnimationFix 1.4.8 -> 1.5.0 (adds OptionalNetworkAPI), MemoryLeakFix 1.3.9 -> 1.3.10 and SnatcherBugFix 0.5.0 -> 0.6.0.
-- Remove DoorEnemyFix 1.0.0 (deprecated on Thunderstore); direct dependencies now total 34.
-- Validated in game (GTFO revision 34873): C1, C2, D1, D2 and D3 reach InLevel and all 19 fixed scan positions pass with the new dependency combination. Each stage's warden events (including the AWO door event in D1), snatcher capture/release in D3 and warden intel across three consecutive D1 drops were also checked; see VALIDATION.md. Full mission clears and multiplayer were not tested.
+- Update CheeseGeos 0.5.8 -> 0.6.2. Since 0.6.0 its prefabs are in per-tile folders for GTFO-API's AssetAPI V2; update the D3 complex resource set and zone geomorphs (Refinery_X_RLC_01, Storage_I_RLC_01) and the unreleased E1 resource set to the new paths.
+- Update AdvancedWardenObjective 2.5.7 -> 2.6.4 (GTFO-API 0.6.1 / AmorLib 1.3.0). This pulls in BepInExPack_GTFO 3.2.4, which now installs GTFO-API as a separate package.
+- Update EnemyAnimationFix 1.4.8 -> 1.5.0 and FlowGeos 0.9.4 -> 0.9.5. Require MemoryLeakFix 1.3.10, SnatcherBugFix 0.6.0, OptionalNetworkAPI 1.3.3 and ExtraObjectiveSetup 1.6.15 directly, so that the latest versions are installed instead of the older ones other packages ask for.
+- Remove DoorEnemyFix 1.0.0 (deprecated on Thunderstore) and WardenIntelOhBehave 0.0.1 (MemoryLeakFix 1.3.10 now clears the leftover warden intel queue between expeditions in the same way). Direct dependencies now total 35.
+- Show the sub-objective messages that never appeared in C2, D1 and D3: their text was written inline, and the game only syncs TextDataBlock IDs. The text is now in TextDataBlocks 1580-1584.
+- C1: give the exit wave valid wave settings (ID 111111 did not fit in 16 bits, so the wave had none), point the win-condition StopEnemyWaves event at reality instead of a missing dimension, and add Refinery entries to the resource set (no more fallback to ALL; same layout).
+- C2: OVERRIDE_LOCKDOWN now names ZONE 106, the zone it opens, in its description and intel (it said ZONE 107), and its scan uses the zone's bioscan points instead of a missing world object.
+- Remove unused chained puzzles (256, 275-277), dimensions (2, 9-12) and an enemy population entry (enemy 70) that referenced missing data, and clear the missing third layout of the unreleased E1.
+- Validated in game (GTFO revision 34873): C1, C2, D1, D2 and D3 reach InLevel and all 19 fixed scan positions pass with the new dependencies. C2, D1, D2 and D3 were cleared through their own doors, terminal commands, objectives and exit scans, with delayed events firing within 0.3 s of their delays. Warden events, snatcher capture/release and warden intel on repeated drops were also checked; see VALIDATION.md. The C1 clear and multiplayer were not tested.
 
 ```1.1.6```
 
